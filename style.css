@@ -1,0 +1,710 @@
+/* PALETA INDUSTRIAL / MISTERIO ESCAPE ROOM */
+:root {
+    --primary: #c49c48;       /* Dorado Misión 15 */
+    --primary-hover: #a37f37; /* Dorado más oscuro para efectos hover */
+    --bg-dark: #000000;       /* Negro de la imagen */
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background-color: #000000;
+    color: #ffffff;
+    font-family: 'Roboto', sans-serif;
+}
+
+/* Encabezados compactos e industriales */
+h1, h2, h3, .logo-text {
+    font-family: 'Big Shoulders Display', sans-serif;
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+/* NAVBAR FINA */
+.navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 70px;
+    background-color: rgba(13, 13, 13, 0.95);
+    border-bottom: 2px solid var(--primary);
+    display: flex;
+    align-items: center;
+    z-index: 1000;
+}
+.nav-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center; /* Alinea verticalmente el logo (izq) y los botones (der) */
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 15px;
+    box-sizing: border-box;
+}
+.logo-text {
+    font-size: 28px;
+    color: var(--primary);
+    cursor: pointer;
+}
+.logo-text span {
+    font-family: 'Oswald', sans-serif;
+    font-size: 14px;
+    color: var(--text-light);
+}
+.nav-links {
+    display: flex;
+    align-items: center; /* Centra verticalmente los botones y el logo de IG */
+    gap: 15px;           /* Espacio uniforme entre botones */
+}
+.nav-btn {
+    background: transparent;
+    border: 1px solid var(--border-color);
+    color: var(--text-light);
+    padding: 8px 16px;
+    font-family: 'Oswald', sans-serif;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: 0.2s ease;
+}
+.nav-btn:hover {
+    border-color: var(--primary);
+    color: var(--primary);
+}
+.gold-btn {
+    background: var(--primary);
+    color: #000;
+    border: none;
+    font-weight: bold;
+}
+.gold-btn:hover {
+    background: var(--primary-hover);
+    color: #000;
+}
+
+/* SISTEMA SPA: MANEJO DE VISTAS */
+.vista-seccion {
+    padding-top: 90px; /* Ajusta este valor si tu header es más alto */
+    padding-bottom: 40px;
+    padding-left: 20px;
+    padding-right: 20px;
+    box-sizing: border-box;
+    min-height: calc(100vh - 90px); /* Asegura que ocupe el resto de la pantalla */
+}
+.vista-seccion.activo {
+    display: block;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* PÁGINA 1: HERO & INTRO */
+.hero-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 40px 20px;
+    background: linear-gradient(180deg, #1f1a12 0%, var(--bg-dark) 100%);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    margin-bottom: 30px;
+}
+.main-logo {
+    max-width: 200px;
+    margin-bottom: 15px;
+}
+.logo-fallback {
+    font-size: 70px;
+    color: var(--primary);
+    line-height: 1;
+}
+.tagline {
+    font-family: 'Oswald', sans-serif;
+    font-size: 18px;
+    letter-spacing: 4px;
+    color: var(--text-muted);
+    margin-bottom: 20px;
+}
+.intro-text {
+    max-width: 700px;
+    font-size: 18px;
+    line-height: 1.6;
+    color: #e0e0e0;
+    margin-bottom: 25px;
+}
+
+/* BOTONES ESTILO PDF */
+.btn-principal {
+    background: var(--primary);
+    color: #000;
+    font-family: 'Big Shoulders Display', sans-serif;
+    font-size: 22px;
+    font-weight: 900;
+    padding: 12px 35px;
+    border: none;
+    cursor: pointer;
+    border-radius: 4px;
+    letter-spacing: 1px;
+    transition: 0.2s ease;
+}
+.btn-principal:hover {
+    background: var(--primary-hover);
+    transform: scale(1.03);
+}
+
+/* PÁGINA 2: MISIÓN ACTUAL & DETALLES DIRECTOS */
+.mision-actual-box {
+    background: var(--bg-card);
+    border-left: 5px solid var(--primary);
+    padding: 25px;
+    border-radius: 4px;
+    margin-bottom: 30px;
+}
+.mision-actual-box h2 {
+    font-size: 32px;
+    color: var(--primary);
+    margin-bottom: 10px;
+}
+.resumen-mision {
+    font-size: 15px;
+    line-height: 1.6;
+    color: #d4d4d4;
+}
+.info-general-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+.info-card-direc {
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    padding: 20px;
+    border-radius: 6px;
+}
+.info-card-direc h3 {
+    font-size: 22px;
+    color: var(--primary);
+    margin-bottom: 10px;
+    border-bottom: 1px dashed var(--border-color);
+    padding-bottom: 5px;
+}
+.info-card-direc ul {
+    list-style: none;
+}
+.info-card-direc li {
+    margin-bottom: 6px;
+    font-size: 14px;
+}
+
+/* PÁGINA 3 Y 4: SELECCIÓN DE MODALIDADES */
+.seccion-titulo {
+    font-size: 45px;
+    text-align: center;
+    margin-bottom: 30px;
+    color: var(--primary);
+}
+.modalidades-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 30px;
+}
+.modalidad-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 30px;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+}
+.modalidad-card.premium {
+    border-color: var(--primary);
+    box-shadow: 0 0 15px rgba(197, 160, 89, 0.1);
+}
+.card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    border-bottom: 2px solid var(--border-color);
+    padding-bottom: 10px;
+    margin-bottom: 15px;
+}
+.card-header h3 {
+    font-size: 32px;
+    color: var(--text-light);
+}
+.modalidad-card.premium .card-header h3 {
+    color: var(--primary);
+}
+.duracion {
+    font-family: 'Oswald', sans-serif;
+    font-size: 14px;
+    background: #262626;
+    padding: 4px 10px;
+    border-radius: 4px;
+    font-weight: bold;
+}
+.card-desc {
+    font-size: 14px;
+    color: var(--text-muted);
+    line-height: 1.5;
+    margin-bottom: 20px;
+    min-height: 65px;
+}
+.specs-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 10px;
+    background: #080808;
+    padding: 12px;
+    border-radius: 6px;
+    font-size: 13px;
+    margin-bottom: 20px;
+}
+.specs-grid small {
+    display: block;
+    color: var(--text-muted);
+}
+.precios-tabla {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 25px;
+    font-size: 14px;
+}
+.precios-tabla td {
+    padding: 8px 0;
+    border-bottom: 1px solid #1a1a1a;
+}
+.precios-tabla td.precio {
+    text-align: right;
+    font-weight: bold;
+    color: var(--primary);
+}
+.modalidad-card .btn-principal {
+    margin-top: auto;
+    width: 100%;
+}
+
+/* FLUJO FINAL DE RESERVAS */
+.btn-volver {
+    background: transparent;
+    border: none;
+    color: var(--primary);
+    cursor: pointer;
+    font-family: 'Oswald', sans-serif;
+    font-size: 15px;
+    margin-bottom: 15px;
+}
+.reserva-layout {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 30px;
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    padding: 30px;
+    border-radius: 8px;
+}
+.col-izq {
+    border-right: 1px solid var(--border-color);
+    padding-right: 30px;
+}
+.form-grupo {
+    margin-bottom: 20px;
+}
+.form-grupo label {
+    display: block;
+    font-size: 14px;
+    font-weight: bold;
+    margin-bottom: 8px;
+    color: var(--text-muted);
+}
+.input-control {
+    width: 100%;
+    background: #1c1c1c;
+    border: 1px solid var(--border-color);
+    color: white;
+    padding: 10px;
+    border-radius: 4px;
+    font-size: 14px;
+}
+.input-control:focus {
+    border-color: var(--primary);
+    outline: none;
+}
+
+/* SELECTORES DE TURNOS CUPOS 0 O 1 */
+.grupos-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+    gap: 10px;
+    margin-top: 10px;
+}
+.grupo-btn {
+    background: #1c1c1c;
+    border: 1px solid var(--border-color);
+    padding: 12px 8px;
+    text-align: center;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: 0.2s;
+}
+.grupo-btn strong {
+    display: block;
+    font-size: 15px;
+    color: white;
+}
+.grupo-btn .cupo {
+    display: block;
+    font-size: 11px;
+    color: var(--primary);
+    margin-top: 4px;
+}
+.grupo-btn:hover:not(.disabled) {
+    border-color: var(--primary);
+    background: #242424;
+}
+.grupo-btn.selected {
+    background: var(--primary) !important;
+    border-color: var(--primary) !important;
+}
+.grupo-btn.selected strong, .grupo-btn.selected .cupo {
+    color: #000 !important;
+    font-weight: bold;
+}
+.grupo-btn.disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+}
+.grupo-btn.disabled .cupo {
+    color: var(--danger);
+}
+
+/* SECCIÓN DERECHA FORMULARIO */
+.vendedores-radios {
+    display: flex;
+    gap: 15px;
+}
+.radio-label {
+    font-size: 13px;
+    cursor: pointer;
+}
+.promo-box {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+.btn-secundario {
+    background: #262626;
+    border: 1px solid var(--border-color);
+    color: white;
+    padding: 0 15px;
+    cursor: pointer;
+    border-radius: 4px;
+}
+.btn-secundario:hover {
+    border-color: var(--primary);
+}
+.precio-final-box {
+    background: #1c1c1c;
+    padding: 15px;
+    border-radius: 6px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+.precio-final-box strong {
+    font-size: 24px;
+    color: var(--primary);
+    font-family: 'Oswald', sans-serif;
+}
+.btn-confirmar {
+    width: 100%;
+    background: var(--primary);
+    color: black;
+    border: none;
+    padding: 12px;
+    font-family: 'Big Shoulders Display', sans-serif;
+    font-size: 22px;
+    font-weight: 900;
+    cursor: pointer;
+    border-radius: 4px;
+}
+.btn-confirmar:hover {
+    background: var(--primary-hover);
+}
+
+/* DETALLES DE INTL-TEL-INPUT */
+.iti { width: 100%; }
+
+/* MODALES DE ADMINISTRACIÓN */
+.modal-admin {
+    display: none;
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(0,0,0,0.85);
+    z-index: 2000;
+    justify-content: center;
+    align-items: center;
+}
+.modal-contenido {
+    background: var(--bg-card);
+    border: 2px solid var(--primary);
+    width: 90%;
+    max-width: 500px;
+    padding: 25px;
+    border-radius: 8px;
+}
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+.btn-cerrar {
+    background: transparent;
+    border: none;
+    color: white;
+    font-size: 18px;
+    cursor: pointer;
+}
+.fila-horario {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: #1c1c1c;
+    padding: 8px;
+    margin-bottom: 8px;
+    border-radius: 4px;
+}
+.fila-horario select, .fila-horario input {
+    background: #000;
+    border: 1px solid var(--border-color);
+    color: white;
+    padding: 4px;
+}
+.admin-lista-scroll {
+    max-height: 250px;
+    overflow-y: auto;
+    margin-bottom: 15px;
+}
+.admin-acciones {
+    display: flex;
+    justify-content: space-between;
+}
+
+/* RESPONSIVE SENCILLO */
+@media(max-width: 768px) {
+    .info-general-grid, .modalidades-grid, .reserva-layout {
+        grid-template-columns: 1fr;
+    }
+    .col-izq {
+        border-right: none;
+        padding-right: 0;
+        border-bottom: 1px solid var(--border-color);
+        padding-bottom: 20px;
+    }
+}
+
+.vista-seccion {
+    display: none !important;
+}
+
+.vista-seccion.activo {
+    display: block !important; /* Si usás flex o grid en el contenedor principal, cambialo por flex/grid */
+}
+
+/* Estandarización de Logos */
+.nav-logo {
+    height: 40px;        /* Altura fija estándar */
+    width: auto;         /* Mantiene la proporción circular perfecta */
+    display: block;      /* Evita espacios fantasmas debajo de las imágenes */
+}
+
+.hero-logo-box .main-logo {
+    max-width: 280px;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 1 / 1;     /* Fuerza una proporción cuadrada */
+    object-fit: cover;
+    border-radius: 50%;      /* Recorta el fondo cuadrado sobrante */
+    box-shadow: 0 0 20px rgba(196, 156, 72, 0.3); /* Resplandor dorado tenue */
+    margin-bottom: 15px;
+}
+
+.logo-brand-box {
+    display: flex;
+    align-items: center; /* Centrado vertical perfecto entre imagen y texto */
+    gap: 12px;           /* Espacio horizontal fijo entre el logo y el texto */
+    cursor: pointer;
+}
+
+.logo-brand-box:hover .nav-logo {
+    transform: scale(1.05);
+    transition: transform 0.2s ease;
+}
+
+.logo-text, .seccion-titulo, .reserva-titulo-dinamico span, .precio-final-box strong {
+    font-family: 'Oswald', sans-serif !important; /* Misma familia tipográfica compacta */
+    text-transform: uppercase;
+    color: var(--primary) !important;
+}
+
+.logo-text span {
+    color: #ffffff !important;
+    font-weight: 400;
+}
+
+html {
+    scroll-padding-top: 90px; 
+}
+
+/* ==========================================
+   SECCIÓN NUESTRA SALA - CARRUSEL
+   ========================================== */
+.nuestra-sala-box {
+    margin-top: 50px;
+    margin-bottom: 40px;
+    text-align: center;
+}
+
+.carrusel-container {
+    position: relative;
+    max-width: 500px; /* Tamaño ideal para fotos verticales */
+    margin: 20px auto 10px auto;
+    overflow: hidden;
+    border-radius: 12px;
+    border: 2px solid var(--primary, #c49c48);
+    box-shadow: 0 0 15px rgba(196, 156, 72, 0.2);
+    background-color: #000;
+}
+
+.carrusel-slide {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 400px;
+    max-height: 600px;
+}
+
+.carrusel-img {
+    display: none;
+    width: 100%;
+    height: auto;
+    max-height: 600px;
+    object-fit: contain;
+}
+
+.carrusel-img.activa {
+    display: block;
+    animation: fadeIn 0.4s ease-in-out;
+}
+
+/* Flechas de Navegación */
+.carrusel-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: rgba(0, 0, 0, 0.6);
+    color: var(--primary, #c49c48);
+    border: 1px solid var(--primary, #c49c48);
+    font-size: 24px;
+    padding: 12px 16px;
+    cursor: pointer;
+    border-radius: 50%;
+    transition: all 0.2s ease;
+    z-index: 10;
+}
+
+.carrusel-btn:hover {
+    background-color: var(--primary, #c49c48);
+    color: #000;
+}
+
+.carrusel-btn.prev { left: 15px; }
+.carrusel-btn.next { right: 15px; }
+
+/* Indicadores de Puntos */
+.carrusel-puntos {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    margin-top: 12px;
+}
+
+.punto {
+    width: 12px;
+    height: 12px;
+    background-color: #333;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.punto.activo {
+    background-color: var(--primary, #c49c48);
+}
+
+@keyframes fadeIn {
+    from { opacity: 0.4; }
+    to { opacity: 1; }
+}
+
+/* ==========================================
+   BOTÓN / ENLACE DE INSTAGRAM
+   ========================================== */
+.ig-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    background-color: rgba(196, 156, 72, 0.1);
+    border: 1px solid var(--primary, #c49c48);
+    color: var(--primary, #c49c48);
+    transition: all 0.3s ease;
+    text-decoration: none;
+    margin: 0;          /* Reseteamos márgenes raros */
+}
+
+.ig-link:hover {
+    background-color: var(--primary, #c49c48);
+    color: #000000;
+    transform: scale(1.1);
+    box-shadow: 0 0 10px rgba(196, 156, 72, 0.5);
+}
+
+.ig-icon {
+    width: 20px;
+    height: 20px;
+    fill: currentColor;
+}
+
+/* ==========================================
+   ALERTA DE ERROR SUPERIOR (FORMULARIO)
+   ========================================== */
+.error-superior-box {
+    background-color: rgba(26, 10, 10, 0.95);
+    color: #ff4d4d;
+    border: 2px solid #cc0000;
+    padding: 15px;
+    border-radius: 6px;
+    margin-bottom: 25px;
+    font-family: 'Oswald', sans-serif;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    font-size: 15px;
+    text-align: center;
+    box-shadow: 0 0 15px rgba(204, 0, 0, 0.2);
+    animation: fadeIn 0.3s ease-in-out;
+}

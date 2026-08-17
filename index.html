@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Misión 15 - Escape Room</title>
+    
+    <!-- FAVICON -->
+    <link rel="icon" type="image/png" href="logo.png">
+
+    <!-- Estilos de intl-tel-input -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.19/css/intl-tel-input.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@700;900&family=Oswald:wght@400;600&family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- BARRA DE NAVEGACIÓN CON INSTAGRAM -->
+<nav class="navbar">
+    <div class="nav-container">
+        <!-- LOGO + TEXTO -->
+        <div class="logo-brand-box" onclick="mostrarVista('inicio')">
+            <img src="logo.png" alt="Logo Misión 15" class="nav-logo">
+            <div class="logo-text">MISIÓN 15 <span>• ESCAPE ROOM</span></div>
+        </div>
+        
+        <div class="nav-links">
+            <button onclick="mostrarVista('inicio')" class="nav-btn">Inicio</button>
+            <button onclick="mostrarVista('modalidades')" class="nav-btn gold-btn">Reservar Turno</button>
+            
+            <!-- ENLACE A INSTAGRAM -->
+            <a href="https://www.instagram.com/mision15.sala.escape/" target="_blank" rel="noopener noreferrer" class="ig-link" title="Síguenos en Instagram">
+                <svg class="ig-icon" viewBox="0 0 24 24" width="24" height="24" fill="currentColor">
+                    <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+                </svg>
+            </a>
+        </div>
+    </div>
+</nav>
+    <!-- VISTA 1: INICIO -->
+    <section id="vista-inicio" class="vista-seccion activo">
+        <div class="hero-container">
+            <div class="hero-logo-box">
+                <!-- LOGO PRINCIPAL HERO -->
+                <img src="logo.png" alt="Misión 15 Logo" class="main-logo">
+                <h1 class="logo-fallback" style="display: none;">MISIÓN 15</h1>
+                <p class="tagline">- ESCAPE ROOM -</p>
+            </div>
+            <div class="hero-content">
+                <p class="intro-text">Viví una experiencia inmersiva de investigación, enigmas y trabajo en equipo. Reuní a tu equipo, seguí las pistas y resolvé la misión antes de que se termine el tiempo.</p>
+                <button class="btn-principal" onclick="mostrarVista('modalidades')">RESERVAR AHORA</button>
+            </div>
+        </div>
+
+        <div class="mision-actual-box">
+            <h2>MISIÓN ACTUAL: EL ROBO DE LA COPA DEL MUNDO</h2>
+            <p class="resumen-mision">Faltan 15 minutos para la final del Mundial FIFA 2026. La Copa del Mundo desapareció y la FIFA activó un protocolo de emergencia absolutamente secreto. Tenés el tiempo justo para seguir las pistas, resolver los enigmas y recuperarla antes de que comience la final.</p>
+        </div>
+ <div class="nuestra-sala-box">
+            <h2 class="seccion-titulo">NUESTRA SALA</h2>
+            
+            <div class="carrusel-container">
+                <!-- Flecha Izquierda -->
+                <button class="carrusel-btn prev" onclick="moverCarrusel(-1)">&#10094;</button>
+                
+                <!-- Contenedor de Diapositivas -->
+                <div class="carrusel-slide">
+                    <img src="Imágenes de la sala/PIZARRA Y MESSI0.jpg.jpeg" class="carrusel-img activa" alt="Sala Misión 15 - Imagen 1">
+                    <img src="Imágenes de la sala/MANOS EN ACCION0.jpg.jpeg" class="carrusel-img" alt="Sala Misión 15 - Imagen 2">
+                    <img src="Imágenes de la sala/ESCRITORIO EVIDENCIA0.jpg.jpeg" class="carrusel-img" alt="Sala Misión 15 - Imagen 3">
+                    <img src="Imágenes de la sala/DIBU Y CAJONES0.jpg.jpeg" class="carrusel-img" alt="Sala Misión 15 - Imagen 4">
+                </div>
+
+                <!-- Flecha Derecha -->
+                <button class="carrusel-btn next" onclick="moverCarrusel(1)">&#10095;</button>
+            </div>
+
+            <!-- Indicadores de puntos (opcional) -->
+            <div class="carrusel-puntos">
+                <span class="punto activo" onclick="irAFoto(0)"></span>
+                <span class="punto" onclick="irAFoto(1)"></span>
+                <span class="punto" onclick="irAFoto(2)"></span>
+                <span class="punto" onclick="irAFoto(3)"></span>
+            </div>
+        </div>
+        <div class="info-general-grid">
+            <div class="info-card-direc">
+                <h3>UBICACIÓN</h3>
+                <p>Mercat de Villa Crespo</p>
+                <p class="sub-p">Thames 747 – Ciudad de Buenos Aires</p>
+            </div>
+            <div class="info-card-direc">
+                <h3>HORARIOS GENERALES</h3>
+                <ul>
+                    <li><strong>Martes a Jueves:</strong> 16 a 23 hs</li>
+                    <li><strong>Viernes:</strong> 16 a 01 hs</li>
+                    <li><strong>Sábados:</strong> 12 a 01 hs</li>
+                    <li><strong>Domingos:</strong> 12 a 23 hs</li>
+                </ul>
+            </div>
+        </div>
+        <!-- SECCIÓN: NUESTRA SALA (CARRUSEL) -->
+       
+    </section>
+
+    <!-- VISTA 2: SELECCIÓN DE MODALIDAD -->
+    <section id="vista-modalidades" class="vista-seccion">
+        <h2 class="seccion-titulo">ELEGÍ TU MISIÓN</h2>
+        <div class="modalidades-grid">
+            
+            <!-- TARJETA MISIÓN EXPRESS -->
+            <div class="modalidad-card">
+                <div class="card-header">
+                    <h3>MISIÓN EXPRESS</h3>
+                    <span class="duracion">15 MINUTOS</span>
+                </div>
+                <p class="card-desc">La experiencia original de Misión15. Ideal para amigos, familias y quienes buscan adrenalina, diversión y trabajo en equipo en una misión contrarreloj.</p>
+                
+                <div class="specs-grid">
+                    <div><strong>Jugadores:</strong> 2 a 6</div>
+                    <div><strong>Edad:</strong> ATP <small>(&lt;11 años con adulto)</small></div>
+                    <div><strong>Dificultad:</strong> Media (6.5/10)</div>
+                </div>
+
+                <table class="precios-tabla">
+                    <tr><td>2 Participantes</td><td class="precio">$30.000</td></tr>
+                    <tr><td>3 Participantes</td><td class="precio">$40.000</td></tr>
+                    <tr><td>4 Participantes</td><td class="precio">$50.000</td></tr>
+                    <tr><td>5 Participantes</td><td class="precio">$60.000</td></tr>
+                    <tr><td>6 Participantes</td><td class="precio">$75.000</td></tr>
+                </table>
+
+                <button id="btn-express" class="btn-principal">RESERVAR EXPRESS</button>
+            </div>
+
+            <!-- TARJETA MISIÓN EXTENDIDA -->
+            <div class="modalidad-card premium">
+                <div class="card-header">
+                    <h3>MISIÓN EXTENDIDA</h3>
+                    <span class="duracion">40 MINUTOS</span>
+                </div>
+                <p class="card-desc">Una investigación más larga, con nuevos enigmas y mayor dificultad. Recomendada para quienes ya conocen las salas de escape o buscan un desafío más intenso.</p>
+                
+                <div class="specs-grid">
+                    <div><strong>Jugadores:</strong> 2 a 6</div>
+                    <div><strong>Edad:</strong> ATP <small>(&lt;13 años con adulto)</small></div>
+                    <div><strong>Dificultad:</strong> Alta (7/10)</div>
+                </div>
+
+                <table class="precios-tabla">
+                    <tr><td>2 Participantes</td><td class="precio">$43.000</td></tr>
+                    <tr><td>3 Participantes</td><td class="precio">$59.000</td></tr>
+                    <tr><td>4 Participantes</td><td class="precio">$70.000</td></tr>
+                    <tr><td>5 Participantes</td><td class="precio">$78.000</td></tr>
+                    <tr><td>6 Participantes</td><td class="precio">$84.000</td></tr>
+                </table>
+
+                <button id="btn-extendida" class="btn-principal gold">RESERVAR EXTENDIDA</button>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- VISTA 3: SISTEMA DE RESERVAS COMPLETO -->
+    <section id="vista-reserva-final" class="vista-seccion">
+        <div class="reserva-flow-container">
+            <button class="btn-volver" onclick="mostrarVista('modalidades')">← Volver a elegir modalidad</button>
+           <!-- ASÍ DEBE QUEDAR EN TU HTML -->
+<div id="vista-reserva" class="vista-seccion">
+    
+    <!-- 1. El contenedor del error pegalo ACÁ (bien arriba, adentro de la vista activa) -->
+    <div id="error-formulario-superior" class="error-superior-box" style="display: none;"></div>
+
+    <!-- 2. Acá abajo sigue tu estructura normal (el botón volver, el layout, etc.) -->
+    <button class="btn-volver">← Volver</button>
+    
+    <div class="reserva-layout">
+        <!-- ... el resto de tus columnas con los inputs y el botón confirmar ... -->
+    </div>
+</div>
+            <div class="reserva-layout">
+                <!-- COLUMNA IZQUIERDA -->
+                
+                <div class="col-izq">
+                    <h2 class="reserva-titulo-dinamico">Reservar: <span id="mision-seleccionada-txt">-</span></h2>
+                    
+                    <div class="form-grupo">
+                        <label for="fecha">1. Seleccioná el Día:</label>
+                        <input type="date" id="fecha" class="input-control">
+                    </div>
+
+                    <div class="turnos-box">
+                        <label>2. Horarios Disponibles para esta fecha:</label>
+                        <div id="contenedorGrupos" class="grupos-grid">
+                            <!-- Inyectado dinámicamente -->
+                        </div>
+                    </div>
+
+                    <div class="form-grupo" style="margin-top: 20px;">
+                        <label for="cantidad-participantes">3. Cantidad de Participantes:</label>
+                        <select id="cantidad-participantes" class="input-control" onchange="actualizarPrecioPorParticipantes()">
+                            <option value="" disabled selected>-- Seleccioná cuántos son --</option>
+                            <option value="2">2 Participantes</option>
+                            <option value="3">3 Participantes</option>
+                            <option value="4">4 Participantes</option>
+                            <option value="5">5 Participantes</option>
+                            <option value="6">6 Participantes</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- COLUMNA DERECHA -->
+                <div class="col-der">
+                    <h3>4. Completá tus Datos</h3>
+                    
+                    <div class="form-grupo">
+                        <label for="nombre">Nombre Completo:</label>
+                        <input type="text" id="nombre" class="input-control" placeholder="Ej. Juan Pérez">
+                    </div>
+
+                    <div class="form-grupo">
+                        <label for="email">Correo Electrónico:</label>
+                        <input type="email" id="email" class="input-control" placeholder="nombre@gmail.com">
+                    </div>
+
+                    <div class="form-grupo input-tel-container" style="margin-bottom: 20px;">
+                        <label for="telefono" style="display:block; margin-bottom:5px;">Teléfono Móvil:</label>
+                        <input type="tel" id="telefono" class="input-control" style="width: 100%;">
+                    </div>
+
+                    <div class="form-grupo">
+                        <label>¿Por dónde nos contactaste?</label>
+                        <div class="vendedores-radios">
+                            <label class="radio-label"><input type="radio" name="vendedor" value="Vendedor 1"> Felipe</label>
+                            <label class="radio-label"><input type="radio" name="vendedor" value="Vendedor 2"> Joaquín</label>
+                            <label class="radio-label"><input type="radio" name="vendedor" value="Vendedor 3"> Otro</label>
+                        </div>
+                    </div>
+
+                    <div class="precio-final-box" style="margin-top: 25px;">
+                        <span>Total de la reserva:</span>
+                        <strong id="precioTxt">$0</strong>
+                    </div>
+
+                    <button id="btnPagar" class="btn-confirmar" onclick="enviarReserva()">Confirmar Reserva</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- MODALES ADMINISTRATIVOS -->
+    <div id="modalMonitor" class="modal-admin">
+        <div class="modal-contenido">
+            <div class="modal-header">
+                <h3>Monitor de Ocupación</h3>
+                <button onclick="cerrarMonitor()" class="btn-cerrar">✕</button>
+            </div>
+            <input type="date" id="monitorFecha" class="input-control">
+            <div id="tablaSalaContenedor" class="monitor-tabla-cuerpo"></div>
+        </div>
+    </div>
+
+    <div id="modalHorarios" class="modal-admin">
+        <div class="modal-contenido">
+            <div class="modal-header">
+                <h3>Configuración de Horarios</h3>
+                <button onclick="cerrarHorarios()" class="btn-cerrar">✕</button>
+            </div>
+            <input type="date" id="adminFecha" class="input-control" style="margin-bottom: 15px;">
+            <div id="listaHorariosAdmin" class="admin-lista-scroll"></div>
+            <div class="admin-acciones">
+                <button type="button" onclick="agregarFilaHorario('09:00 hs', 1)" class="btn-secundario">+ Añadir Fila</button>
+                <button type="button" onclick="guardarConfiguracionAdmin()" class="btn-confirmar">Guardar Cambios</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- SDKs -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.19/js/intl-tel-input.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
