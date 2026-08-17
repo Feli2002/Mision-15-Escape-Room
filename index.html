@@ -9,25 +9,31 @@
     <link rel="icon" type="image/png" href="logo.png">
 
     <!-- Estilos de intl-tel-input -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.19/css/intl-tel-input.css">
-    <!-- Google Fonts -->
+<!-- Ejemplo con CDNJS (versión 18.2.1) -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/18.2.1/css/intlTelInput.css" />    <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@700;900&family=Oswald:wght@400;600&family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+    
+    <!-- ARCHIVO DE ESTILOS VINCULADO -->
     <link rel="stylesheet" href="style.css">
+
+    <!-- 📍 ACÁ SE COLOCAN LAS FUENTES DE GOOGLE FONTS -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 </head>
 <body>
 
-<!-- BARRA DE NAVEGACIÓN CON INSTAGRAM -->
+<!-- BARRA DE NAVEGACIÓN -->
 <nav class="navbar">
     <div class="nav-container">
         <!-- LOGO + TEXTO -->
-        <div class="logo-brand-box" onclick="mostrarVista('inicio')">
+        <div class="logo-brand-box" onclick="mostrarVista('vista-inicio')">
             <img src="logo.png" alt="Logo Misión 15" class="nav-logo">
             <div class="logo-text">MISIÓN 15 <span>• ESCAPE ROOM</span></div>
         </div>
         
         <div class="nav-links">
-            <button onclick="mostrarVista('inicio')" class="nav-btn">Inicio</button>
-            <button onclick="mostrarVista('modalidades')" class="nav-btn gold-btn">Reservar Turno</button>
+            <button onclick="mostrarVista('vista-inicio')" class="nav-btn">Inicio</button>
+            <button onclick="mostrarVista('vista-modalidades')" class="nav-btn gold-btn">Reservar Turno</button>
             
             <!-- ENLACE A INSTAGRAM -->
             <a href="https://www.instagram.com/mision15.sala.escape/" target="_blank" rel="noopener noreferrer" class="ig-link" title="Síguenos en Instagram">
@@ -38,18 +44,17 @@
         </div>
     </div>
 </nav>
+
     <!-- VISTA 1: INICIO -->
     <section id="vista-inicio" class="vista-seccion activo">
         <div class="hero-container">
             <div class="hero-logo-box">
-                <!-- LOGO PRINCIPAL HERO -->
                 <img src="logo.png" alt="Misión 15 Logo" class="main-logo">
-                <h1 class="logo-fallback" style="display: none;">MISIÓN 15</h1>
                 <p class="tagline">- ESCAPE ROOM -</p>
             </div>
             <div class="hero-content">
                 <p class="intro-text">Viví una experiencia inmersiva de investigación, enigmas y trabajo en equipo. Reuní a tu equipo, seguí las pistas y resolvé la misión antes de que se termine el tiempo.</p>
-                <button class="btn-principal" onclick="mostrarVista('modalidades')">RESERVAR AHORA</button>
+                <button class="btn-principal" onclick="mostrarVista('vista-modalidades')">RESERVAR AHORA</button>
             </div>
         </div>
 
@@ -57,51 +62,77 @@
             <h2>MISIÓN ACTUAL: EL ROBO DE LA COPA DEL MUNDO</h2>
             <p class="resumen-mision">Faltan 15 minutos para la final del Mundial FIFA 2026. La Copa del Mundo desapareció y la FIFA activó un protocolo de emergencia absolutamente secreto. Tenés el tiempo justo para seguir las pistas, resolver los enigmas y recuperarla antes de que comience la final.</p>
         </div>
- <div class="nuestra-sala-box">
-            <h2 class="seccion-titulo">NUESTRA SALA</h2>
-            
-            <div class="carrusel-container">
-                <!-- Flecha Izquierda -->
-                <button class="carrusel-btn prev" onclick="moverCarrusel(-1)">&#10094;</button>
-                
-                <!-- Contenedor de Diapositivas -->
-                <div class="carrusel-slide">
-                    <img src="Imágenes de la sala/PIZARRA Y MESSI0.jpg.jpeg" class="carrusel-img activa" alt="Sala Misión 15 - Imagen 1">
-                    <img src="Imágenes de la sala/MANOS EN ACCION0.jpg.jpeg" class="carrusel-img" alt="Sala Misión 15 - Imagen 2">
-                    <img src="Imágenes de la sala/ESCRITORIO EVIDENCIA0.jpg.jpeg" class="carrusel-img" alt="Sala Misión 15 - Imagen 3">
-                    <img src="Imágenes de la sala/DIBU Y CAJONES0.jpg.jpeg" class="carrusel-img" alt="Sala Misión 15 - Imagen 4">
-                </div>
+<!-- SECCIÓN NUESTRA SALA (CARRUSEL) -->
+<div class="nuestra-sala-box">
+    <h2 class="seccion-titulo">NUESTRA SALA</h2>
+    
+    <div class="carrusel-container">
+        <button class="carrusel-btn prev" onclick="moverCarrusel(-1)">&#10094;</button>
+        
+        <div class="carrusel-slide">
+     <div class="carrusel-slide">
+    <img src="Imágenes de la sala/PIZARRA Y MESSI0.jpg.jpeg" class="carrusel-img activa" alt="Sala Misión 15 - Imagen 1" onclick="abrirLightbox(this)">
+    <img src="Imágenes de la sala/MANOS EN ACCION0.jpg.jpeg" class="carrusel-img" alt="Sala Misión 15 - Imagen 2" onclick="abrirLightbox(this)">
+    <img src="Imágenes de la sala/ESCRITORIO EVIDENCIA0.jpg.jpeg" class="carrusel-img" alt="Sala Misión 15 - Imagen 3" onclick="abrirLightbox(this)">
 
-                <!-- Flecha Derecha -->
-                <button class="carrusel-btn next" onclick="moverCarrusel(1)">&#10095;</button>
-            </div>
-
-            <!-- Indicadores de puntos (opcional) -->
-            <div class="carrusel-puntos">
-                <span class="punto activo" onclick="irAFoto(0)"></span>
-                <span class="punto" onclick="irAFoto(1)"></span>
-                <span class="punto" onclick="irAFoto(2)"></span>
-                <span class="punto" onclick="irAFoto(3)"></span>
-            </div>
+    <!-- Video cliqueable para pantalla completa -->
+    <video class="carrusel-img video-testimonios" controls preload="metadata" onclick="abrirLightbox(this)">
+        <source src="Videos/PRESENTACION.mp4" type="video/mp4">
+    </video>
+</div>
         </div>
+
+        <button class="carrusel-btn next" onclick="moverCarrusel(1)">&#10095;</button>
+    </div>
+
+    <!-- Indicadores para los 4 elementos (3 fotos + 1 video) -->
+    <div class="carrusel-puntos">
+        <span class="punto activo" onclick="irAFoto(0)"></span>
+        <span class="punto" onclick="irAFoto(1)"></span>
+        <span class="punto" onclick="irAFoto(2)"></span>
+        <span class="punto" onclick="irAFoto(3)"></span>
+    </div>
+</div>
+
+        <!-- SECCIÓN TESTIMONIOS (INDEPENDIENTE) -->
+        <div class="testimonios-box">
+            <h2 class="seccion-titulo">TESTIMONIOS</h2>
+            <video class="video-testimonios" controls preload="metadata">
+                <source src="Videos/Video de testimonios.mp4" type="video/mp4"> 
+            </video>
+        </div>
+
         <div class="info-general-grid">
             <div class="info-card-direc">
                 <h3>UBICACIÓN</h3>
                 <p>Mercat de Villa Crespo</p>
                 <p class="sub-p">Thames 747 – Ciudad de Buenos Aires</p>
-            </div>
-            <div class="info-card-direc">
-                <h3>HORARIOS GENERALES</h3>
-                <ul>
-                    <li><strong>Martes a Jueves:</strong> 16 a 23 hs</li>
-                    <li><strong>Viernes:</strong> 16 a 01 hs</li>
-                    <li><strong>Sábados:</strong> 12 a 01 hs</li>
-                    <li><strong>Domingos:</strong> 12 a 23 hs</li>
-                </ul>
-            </div>
+             <div class="mapa-contenedor">
+            <iframe 
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3284.4099161285744!2d-58.44289632431642!3d-34.59379465697402!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x95bcb5f52e26a67b%3A0x7ce12d5a2a7ed6b3!2sMercat%20Villa%20Crespo!5e0!3m2!1ses-419!2sar!4v1786664235867!5m2!1ses-419!2sar"
+                width="100%" 
+                height="300" 
+                style="border:0;" 
+                allowfullscreen="" 
+                loading="lazy" 
+                referrerpolicy="no-referrer-when-downgrade">
+            </iframe>
         </div>
-        <!-- SECCIÓN: NUESTRA SALA (CARRUSEL) -->
-       
+            </div>
+              <!-- SECCIÓN INSTAGRAM -->
+<div class="instagram-card">
+    <h2 class="instagram-titulo">SEGUINOS EN INSTAGRAM</h2>
+    <a href="https://www.instagram.com/mision15.sala.escape/" target="_blank" rel="noopener noreferrer" class="instagram-link" title="Seguinos en Instagram">
+        <!-- SVG Oficial de Instagram para mejor calidad sin depender de archivos de imagen externa -->
+        <svg xmlns="http://www.w3.org/2000/svg" class="instagram-logo-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+            <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+            <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+        </svg>
+    </a>
+</div>
+<button class="btn-principal" onclick="mostrarVista('vista-modalidades')">RESERVAR AHORA</button>
+        </div>
     </section>
 
     <!-- VISTA 2: SELECCIÓN DE MODALIDAD -->
@@ -109,7 +140,6 @@
         <h2 class="seccion-titulo">ELEGÍ TU MISIÓN</h2>
         <div class="modalidades-grid">
             
-            <!-- TARJETA MISIÓN EXPRESS -->
             <div class="modalidad-card">
                 <div class="card-header">
                     <h3>MISIÓN EXPRESS</h3>
@@ -131,10 +161,9 @@
                     <tr><td>6 Participantes</td><td class="precio">$75.000</td></tr>
                 </table>
 
-                <button id="btn-express" class="btn-principal">RESERVAR EXPRESS</button>
+                <button class="btn-reservar" onclick="seleccionarMision('Express')">RESERVAR EXPRESS</button>
             </div>
 
-            <!-- TARJETA MISIÓN EXTENDIDA -->
             <div class="modalidad-card premium">
                 <div class="card-header">
                     <h3>MISIÓN EXTENDIDA</h3>
@@ -156,32 +185,19 @@
                     <tr><td>6 Participantes</td><td class="precio">$84.000</td></tr>
                 </table>
 
-                <button id="btn-extendida" class="btn-principal gold">RESERVAR EXTENDIDA</button>
-            </div>
+<button class="btn-reservar" onclick="seleccionarMision('Extendida')">RESERVAR EXTENDIDA</button>            </div>
 
         </div>
     </section>
 
-    <!-- VISTA 3: SISTEMA DE RESERVAS COMPLETO -->
+    <!-- VISTA 3: SISTEMA DE RESERVAS -->
     <section id="vista-reserva-final" class="vista-seccion">
         <div class="reserva-flow-container">
-            <button class="btn-volver" onclick="mostrarVista('modalidades')">← Volver a elegir modalidad</button>
-           <!-- ASÍ DEBE QUEDAR EN TU HTML -->
-<div id="vista-reserva" class="vista-seccion">
-    
-    <!-- 1. El contenedor del error pegalo ACÁ (bien arriba, adentro de la vista activa) -->
-    <div id="error-formulario-superior" class="error-superior-box" style="display: none;"></div>
+            <div id="error-formulario-superior" class="error-superior-box" style="display: none;"></div>
 
-    <!-- 2. Acá abajo sigue tu estructura normal (el botón volver, el layout, etc.) -->
-    <button class="btn-volver">← Volver</button>
-    
-    <div class="reserva-layout">
-        <!-- ... el resto de tus columnas con los inputs y el botón confirmar ... -->
-    </div>
-</div>
+            <button class="btn-volver" onclick="mostrarVista('vista-modalidades')">← Volver a elegir modalidad</button>
+            
             <div class="reserva-layout">
-                <!-- COLUMNA IZQUIERDA -->
-                
                 <div class="col-izq">
                     <h2 class="reserva-titulo-dinamico">Reservar: <span id="mision-seleccionada-txt">-</span></h2>
                     
@@ -192,9 +208,7 @@
 
                     <div class="turnos-box">
                         <label>2. Horarios Disponibles para esta fecha:</label>
-                        <div id="contenedorGrupos" class="grupos-grid">
-                            <!-- Inyectado dinámicamente -->
-                        </div>
+                        <div id="contenedorGrupos" class="grupos-grid"></div>
                     </div>
 
                     <div class="form-grupo" style="margin-top: 20px;">
@@ -210,7 +224,6 @@
                     </div>
                 </div>
 
-                <!-- COLUMNA DERECHA -->
                 <div class="col-der">
                     <h3>4. Completá tus Datos</h3>
                     
@@ -229,56 +242,119 @@
                         <input type="tel" id="telefono" class="input-control" style="width: 100%;">
                     </div>
 
-                    <div class="form-grupo">
-                        <label>¿Por dónde nos contactaste?</label>
-                        <div class="vendedores-radios">
-                            <label class="radio-label"><input type="radio" name="vendedor" value="Vendedor 1"> Felipe</label>
-                            <label class="radio-label"><input type="radio" name="vendedor" value="Vendedor 2"> Joaquín</label>
-                            <label class="radio-label"><input type="radio" name="vendedor" value="Vendedor 3"> Otro</label>
-                        </div>
-                    </div>
+ <!-- Selección Única de Pago -->
+<div class="form-grupo" style="margin-top: 20px;">
+    <label style="display: block; margin-bottom: 8px; font-weight: bold;color:#ffffff">Tipo de Pago:</label>
+    
+    <div style="display: flex; gap: 15px; background: #161616;">
+        <label style="cursor: pointer; display: flex; align-items: center; gap: 6px;color:#ffffff">
+            <input type="radio" name="tipoPago" value="sena" checked onchange="calcularPrecioReserva()">
+            <span>Pagar Seña</span>
+        </label>
+        
+        <label style="cursor: pointer; display: flex; align-items: center; gap: 6px;color: #ffffff;">
+            <input type="radio" name="tipoPago" value="total" onchange="calcularPrecioReserva()">
+            <span>Total de la Sala</span>
+        </label>
+    </div>
+</div>                 
 
                     <div class="precio-final-box" style="margin-top: 25px;">
                         <span>Total de la reserva:</span>
                         <strong id="precioTxt">$0</strong>
                     </div>
 
-                    <button id="btnPagar" class="btn-confirmar" onclick="enviarReserva()">Confirmar Reserva</button>
-                </div>
+<button id="btnPagar" onclick="enviarReserva()">Confirmar Reserva</button>                </div>
             </div>
         </div>
     </section>
 
-    <!-- MODALES ADMINISTRATIVOS -->
-    <div id="modalMonitor" class="modal-admin">
-        <div class="modal-contenido">
-            <div class="modal-header">
-                <h3>Monitor de Ocupación</h3>
-                <button onclick="cerrarMonitor()" class="btn-cerrar">✕</button>
-            </div>
-            <input type="date" id="monitorFecha" class="input-control">
-            <div id="tablaSalaContenedor" class="monitor-tabla-cuerpo"></div>
-        </div>
-    </div>
+    <!-- VENTANA FLOTANTE CON CARRUSEL INTEGRADO -->
+   <!-- LIGHTBOX PARA VER IMÁGENES EN GRANDE CON NAVEGACIÓN -->
+<!-- LIGHTBOX PARA VER IMÁGENES Y VIDEOS EN PANTALLA COMPLETA -->
+<div id="lightbox-modal" class="lightbox-modal" onclick="cerrarLightboxEnFondo(event)">
+    <span class="lightbox-cerrar" onclick="cerrarLightbox()">&times;</span>
+    
+    <!-- Flecha Izquierda -->
+    <button class="lightbox-btn prev" onclick="cambiarFotoLightbox(-1)">&#10094;</button>
+    
+    <!-- Contenido Ampliado (Imagen) -->
+    <img class="lightbox-contenido" id="lightbox-img" alt="Imagen Ampliada" style="display: none;">
+    
+    <!-- Contenido Ampliado (Video) -->
+    <video class="lightbox-contenido video-testimonios" id="lightbox-video" controls style="display: none;">
+        <source id="lightbox-video-source" src="" type="video/mp4">
+    </video>
+    
+    <!-- Flecha Derecha -->
+    <button class="lightbox-btn next" onclick="cambiarFotoLightbox(1)">&#10095;</button>
+</div>
 
+    <!-- MODAL ADMIN: CONFIGURACIÓN DE HORARIOS (Ctrl+Shift+A / Alt+H) -->
     <div id="modalHorarios" class="modal-admin">
         <div class="modal-contenido">
             <div class="modal-header">
-                <h3>Configuración de Horarios</h3>
-                <button onclick="cerrarHorarios()" class="btn-cerrar">✕</button>
+                <h3>Configurar Horarios</h3>
+                <button type="button" class="btn-cerrar" onclick="cerrarHorarios()">&times;</button>
             </div>
-            <input type="date" id="adminFecha" class="input-control" style="margin-bottom: 15px;">
-            <div id="listaHorariosAdmin" class="admin-lista-scroll"></div>
-            <div class="admin-acciones">
-                <button type="button" onclick="agregarFilaHorario('09:00 hs', 1)" class="btn-secundario">+ Añadir Fila</button>
-                <button type="button" onclick="guardarConfiguracionAdmin()" class="btn-confirmar">Guardar Cambios</button>
+
+            <div class="form-grupo">
+                <label for="adminFecha">Fecha a configurar:</label>
+                <input type="date" id="adminFecha" class="input-control">
             </div>
+
+            <div id="listaHorariosAdmin" style="display:flex; flex-direction:column; gap:10px; margin: 15px 0; max-height: 300px; overflow-y:auto;"></div>
+
+            <button type="button" class="btn-agregar-horario" onclick="agregarFilaHorario('09:00 hs', 1)" style="margin-top: 15px; padding: 8px 15px; background: #28a745; color: white; border: none; border-radius: 4px; cursor: pointer; font-weight: bold;">
+    + Agregar nuevo horario
+</button>
+            <button type="button" class="btn-confirmar" onclick="guardarHorariosAdmin(document.getElementById('fechaAdmin').value)">Guardar Horarios</button>
         </div>
     </div>
 
-    <!-- SDKs -->
+    <!-- MODAL ADMIN: MONITOR DE RESERVAS (Alt+M) -->
+    <div id="modalMonitor" class="modal-admin">
+        <div class="modal-contenido">
+            <div class="modal-header">
+                <h3>Monitor de Reservas</h3>
+                <button type="button" class="btn-cerrar" onclick="cerrarMonitor()">&times;</button>
+            </div>
+
+            <div class="form-grupo">
+                <label for="monitorFecha">Ver reservas del día:</label>
+                <input type="date" id="monitorFecha" class="input-control">
+            </div>
+
+            <div id="tablaSalaContenedor" style="max-height: 400px; overflow-y:auto; margin-top: 15px;"></div>
+        </div>
+    </div>
+
+<!-- LIGHTBOX PARA VER IMÁGENES EN GRANDE -->
+<div id="lightbox-modal" class="lightbox-modal" onclick="cerrarLightbox()">
+    <span class="lightbox-cerrar" onclick="cerrarLightbox()">&times;</span>
+    <img class="lightbox-contenido" id="lightbox-img" alt="Imagen Ampliada">
+</div>
+    <!-- SDKs & SCRIPTS -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.19/js/intl-tel-input.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
     <script src="script.js"></script>
+    <script src="reservasyhorarios.js"></script>
+
+    <!-- MODAL DE RESERVA CONFIRMADA -->
+<div id="modal-confirmacion" class="modal-confirmacion">
+    <div class="modal-confirmacion-contenido">
+        <div class="icono-check">&#10004;</div>
+        <h2>¡Reserva Confirmada!</h2>
+        <p>Tu solicitud ha sido registrada con éxito.</p>
+        
+        <div class="detalles-reserva" id="detalles-reserva-texto">
+            <!-- Se completa dinámicamente desde JS -->
+        </div>
+
+        <button class="btn-principal" onclick="cerrarModalConfirmacion()">Aceptar</button>
+    </div>
+</div>
 </body>
+
+
 </html>
