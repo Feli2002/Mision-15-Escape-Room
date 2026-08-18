@@ -473,10 +473,13 @@ video.carrusel-img.video-testimonios.activa {
    8. VISTA DE SELECCIÓN DE MODALIDAD
    ========================================================================== */
 .modalidades-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 30px;
-    margin-top: 20px;
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    align-items: stretch;
 }
 
 .modalidad-card {
@@ -488,6 +491,8 @@ video.carrusel-img.video-testimonios.activa {
     flex-direction: column;
     justify-content: space-between;
     transition: transform 0.3s ease, border-color 0.3s ease;
+      width: 100%;
+    box-sizing: border-box;
 }
 
 .modalidad-card:hover {
@@ -1269,4 +1274,164 @@ video.carrusel-img.video-testimonios.activa {
 .ubicacion-card, 
 .modal-reserva {
   animation: aparecerDesdeAbajo 0.4s ease-out forwards;
+}
+
+/* ==========================================================================
+   ANIMACIONES EXCLUSIVAS DE LA PÁGINA DE INICIO
+   ========================================================================== */
+
+/* Keyframe 1: Entrada con desplazamiento hacia arriba */
+@keyframes subirConFade {
+    0% {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Keyframe 2: Pulso suave para resaltar la sección de ubicación */
+@keyframes pulsoUbicacion {
+    0% {
+        box-shadow: 0 0 0 0 rgba(212, 175, 55, 0.4);
+    }
+    70% {
+        box-shadow: 0 0 0 12px rgba(212, 175, 55, 0);
+    }
+    100% {
+        box-shadow: 0 0 0 0 rgba(212, 175, 55, 0);
+    }
+}
+
+/* Keyframe 3: Rebote para llamar la atención en botones */
+@keyframes reboteSuave {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-8px);
+    }
+}
+
+/* --------------------------------------------------------------------------
+   APLICACIÓN EXCLUSIVA EN UBICACIÓN Y SECCIONES DE #vista-inicio
+   -------------------------------------------------------------------------- */
+
+/* Entrada progresiva de bloques */
+#vista-inicio .hero-container {
+    animation: subirConFade 0.6s ease-out forwards;
+}
+
+#vista-inicio .mision-actual-box {
+    animation: subirConFade 0.6s ease-out 0.2s forwards;
+    opacity: 0;
+}
+
+#vista-inicio .nuestra-sala-box {
+    animation: subirConFade 0.6s ease-out 0.3s forwards;
+    opacity: 0;
+}
+
+#vista-inicio .testimonios-box {
+    animation: subirConFade 0.6s ease-out 0.4s forwards;
+    opacity: 0;
+}
+
+#vista-inicio .info-general-grid {
+    animation: subirConFade 0.6s ease-out 0.5s forwards;
+    opacity: 0;
+}
+
+/* --- ANIMACIÓN ESPECÍFICA PARA LA CARD DE UBICACIÓN --- */
+#vista-inicio .info-card-direc {
+    animation: subirConFade 0.7s ease-out 0.5s forwards;
+    transition: transform 0.3s ease, border-color 0.3s ease;
+}
+
+/* Destaque al pasar el mouse por la Ubicación */
+#vista-inicio .info-card-direc:hover {
+    transform: translateY(-5px);
+    border-color: #d4af37;
+    animation: pulsoUbicacion 1.8s infinite;
+}
+
+/* Transición suave para el mapa embebido al hacer hover */
+#vista-inicio .mapa-contenedor iframe {
+    transition: filter 0.3s ease, transform 0.3s ease;
+}
+
+#vista-inicio .info-card-direc:hover .mapa-contenedor iframe {
+    filter: brightness(1.05);
+}
+
+/* Botones con animación en hover */
+#vista-inicio .btn-principal:hover {
+    animation: reboteSuave 0.8s infinite ease-in-out;
+}
+
+.precios-tabla-contenedor {
+    width: 100%;
+    margin-top: 20px;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.precio-sena {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 14px 16px;
+    background: #1a1a1a;
+    border: 1px solid #333;
+    border-bottom: none;
+}
+
+.precio-sena span {
+    font-weight: bold;
+    color: #fff;
+}
+
+.precio-sena strong {
+    color: #d4af37;
+    font-size: 18px;
+}
+
+.titulo-precios {
+    padding: 10px 16px;
+    background: #111;
+    color: #d4af37;
+    font-size: 13px;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    border-left: 1px solid #333;
+    border-right: 1px solid #333;
+}
+
+.precios-tabla {
+    width: 100%;
+    margin: 0;
+    border-collapse: collapse;
+}
+
+.bloque-precio {
+    margin-top: 18px;
+}
+
+.bloque-precio h4 {
+    margin: 0 0 8px 0;
+    color: #d4af37;
+    font-size: 14px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+@media (max-width: 768px) {
+
+    .modalidades-grid {
+        grid-template-columns: 1fr;
+        gap: 25px;
+    }
+
 }
