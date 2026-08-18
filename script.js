@@ -45,19 +45,13 @@ const tablaPrecios = {
 // ==========================================
 // CONTROL DE VISTAS (SPA)
 // ==========================================
-// Variable global para almacenar la modalidad
-// Función auxiliar para alternar vistas/pantallas
-// Variable global para controlar la misión
 let misionSeleccionada = "Express";
 
-// 1. FUNCIÓN PARA MOSTRAR Y OCULTAR VISTAS
 function mostrarVista(idVista) {
-    // Si olvidaste ponerle "vista-", se lo agrega automáticamente
     if (!idVista.startsWith('vista-')) {
         idVista = 'vista-' + idVista;
     }
 
-    // Buscamos todas las secciones
     const secciones = document.querySelectorAll(".vista-seccion");
     
     secciones.forEach(sec => {
@@ -65,7 +59,6 @@ function mostrarVista(idVista) {
         sec.classList.remove("activo");
     });
 
-    // Mostramos la sección seleccionada
     const vistaDestino = document.getElementById(idVista);
     if (vistaDestino) {
         vistaDestino.style.display = "block";
@@ -76,41 +69,24 @@ function mostrarVista(idVista) {
     }
 }
 
-// 2. FUNCIÓN PARA SELECCIONAR LA MISIÓN Y IR A LA RESERVA
 function seleccionarMision(nombreMision) {
     misionSeleccionada = nombreMision;
+    modalidadSeleccionada = nombreMision; // ← sincronizamos ambas variables
 
-    // Actualizamos el texto del título en el formulario
     const tituloTxt = document.getElementById("mision-seleccionada-txt");
     if (tituloTxt) {
         tituloTxt.innerText = nombreMision;
     }
 
-    // Mostramos directamente el formulario de reserva final
     mostrarVista("vista-reserva-final");
 
-    // Recalculamos el precio dinámico si la función existe
     if (typeof calcularPrecioReserva === "function") {
         calcularPrecioReserva();
     }
 }
 
-
 function actualizarPrecioPorParticipantes() {
-    const selectParticipantes = document.getElementById("cantidad-participantes");
-    const txtPrecio = document.getElementById("precioTxt");
-    
-    if (!selectParticipantes || !modalidadSeleccionada) return;
-    
-    const cantidad = selectParticipantes.value;
-    
-    if (cantidad && tablaPrecios[modalidadSeleccionada][cantidad]) {
-        precioFinal = tablaPrecios[modalidadSeleccionada][cantidad];
-        if (txtPrecio) txtPrecio.innerText = `$${precioFinal.toLocaleString('es-AR')}`;
-    } else {
-        precioFinal = 0;
-        if (txtPrecio) txtPrecio.innerText = "$0";
-    }
+    calcularPrecioReserva();
 }
 
 // Event Listeners DOM
@@ -153,7 +129,7 @@ window.seleccionarMision = seleccionarMision;
 window.actualizarPrecioPorParticipantes = actualizarPrecioPorParticipantes;
 
 // ==========================================
-// GESTIÓN DE TURNOS Y FECHAS (CON FILTRO DE AGOTADOS)
+// GESTIÓN DE TURNOS Y FECHAS
 // ==========================================
 function cargarTurnosDelDia(fechaString) {
     if (!fechaString) return;
@@ -165,18 +141,14 @@ function cargarTurnosDelDia(fechaString) {
     contenedor.innerHTML = ""; 
     grupoSeleccionado = ""; 
 
-    // 🔴 0. REFRESCAMOS LA VARIABLE GLOBAL DESDE LOCALSTORAGE
-    disponibilidadTurnos = JSON.parse(localStorage.getItem("turnos_db")) || {};
+    disponibilidadTurnos = JSON.parse(localStorage.getItem("turnos_db")) || disponibilidadTurnos;
 
-    // 1. Solo si la fecha REALMENTE no existe en la base de datos, usamos la estructura base
     if (!disponibilidadTurnos[fechaString]) {
         disponibilidadTurnos[fechaString] = JSON.parse(JSON.stringify(estructuraBasePorDefecto));
         localStorage.setItem("turnos_db", JSON.stringify(disponibilidadTurnos));
     }
 
     const turnosHoy = disponibilidadTurnos[fechaString];
-
-    // 2. Filtrado seguro: convertimos cupos a número por si vino como texto ("1")
     const turnosDisponibles = turnosHoy.filter(turno => Number(turno.cupos) > 0);
 
     if (turnosDisponibles.length === 0) {
@@ -192,7 +164,8 @@ function cargarTurnosDelDia(fechaString) {
         btn.type = "button";
         btn.className = "btn-turno";
 
-        btn.innerHTML = `${turno.hora}<br><span class="cupo" style="font-weight:400; font-size:12px;">${turno.cupos} lugar disp.</span>`;
+        // ✅ FIX 1: Solo muestra la hora, sin texto de cupos
+        btn.innerHTML = turno.hora;
 
         btn.onclick = function() {
             document.querySelectorAll('.btn-turno').forEach(b => b.classList.remove('seleccionado'));
@@ -204,29 +177,24 @@ function cargarTurnosDelDia(fechaString) {
         contenedor.appendChild(wrapper);
     });
 }
+
 // ==========================================
 // ATAJOS Y ADMIN
-// ==========================================
-// ==========================================
-// ATAJOS Y ADMIN (Versión Directa e Inmune al Navegador)
 // ==========================================
 const CLAVE_ADMIN = "admin123";
 
 document.addEventListener('keydown', function(event) {
-    // Alt + H  o  Ctrl + F10 -> Configuración de Horarios
     if ((event.altKey && event.key.toLowerCase() === 'h') || event.key === 'F10') {
         event.preventDefault();
         abrirHorariosConSeguridad();
     }
 
-    // Ctrl + Shift + A -> Configuración de Horarios (atajo alternativo)
     if (event.ctrlKey && event.shiftKey && event.key.toLowerCase() === 'a') {
         event.preventDefault();
         event.stopPropagation();
         abrirHorariosConSeguridad();
     }
 
-    // Alt + M -> Monitor de Reservas
     if (event.altKey && event.key.toLowerCase() === 'm') {
         event.preventDefault();
         abrirMonitorConSeguridad();
@@ -240,8 +208,6 @@ function pedirPassword() {
     return false;
 }
 
-// Punto de entrada único para abrir el panel de administración de horarios.
-// Lo usa tanto el atajo de teclado como el link "⚙️ Admin" del footer.
 function gestionarHorariosAdmin() {
     abrirHorariosConSeguridad();
 }
@@ -349,18 +315,35 @@ document.addEventListener("DOMContentLoaded", function() {
 function prepararCamposAdmin(fecha) {
     const contenedor = document.getElementById("listaHorariosAdmin");
     if (!contenedor) return;
+
     contenedor.innerHTML = "";
-    const turnosExistentes = disponibilidadTurnos[fecha] || estructuraBasePorDefecto;
-    turnosExistentes.forEach(t => agregarFilaHorario(t.hora, t.cupos));
+
+    // Siempre recuperar la información más reciente guardada
+    const turnosGuardados = JSON.parse(
+        localStorage.getItem("turnos_db")
+    ) || {};
+
+    // Sincronizar variable global
+    disponibilidadTurnos = turnosGuardados;
+
+    const turnosExistentes = disponibilidadTurnos[fecha];
+
+    if (turnosExistentes && turnosExistentes.length > 0) {
+        turnosExistentes.forEach(t => {
+            agregarFilaHorario(t.hora, t.cupos);
+        });
+    } else {
+        // Si todavía no hay horarios para ese día,
+        // dejamos una fila inicial para que el administrador pueda cargarla.
+        agregarFilaHorario("09:00 hs", 1);
+    }
 }
 window.prepararCamposAdmin = prepararCamposAdmin;
 
-// 1. Crear la fila visual en el panel admin (usando selects para HH y MM para evitar errores de tipeo)
 function agregarFilaHorario(hora = "09:00 hs", cupos = 1) {
     const contenedor = document.getElementById("listaHorariosAdmin");
     if (!contenedor) return;
 
-    // Separamos "09:00 hs" en hora ("09") y minuto ("00")
     const partes = hora.replace(" hs", "").split(":");
     const hhInicial = partes[0] || "09";
     const mmInicial = partes[1] || "00";
@@ -394,7 +377,6 @@ function agregarFilaHorario(hora = "09:00 hs", cupos = 1) {
 }
 window.agregarFilaHorario = agregarFilaHorario;
 
-// Auxiliar para llenar las 24 horas en el select
 function generarOpcionesHoras(seleccionada) {
     let html = "";
     for (let i = 0; i < 24; i++) {
@@ -404,7 +386,6 @@ function generarOpcionesHoras(seleccionada) {
     return html;
 }
 
-// 2. Validar que no se repitan horarios al cambiar los selects
 function validarHoraUnicaEnLinea(selectElemento) {
     const fila = selectElemento.parentElement;
     const hhElem = fila.querySelector(".admin-hh");
@@ -430,25 +411,48 @@ function validarHoraUnicaEnLinea(selectElemento) {
 }
 window.validarHoraUnicaEnLinea = validarHoraUnicaEnLinea;
 
-// 3. 🚨 FUNCIÓN CLAVE: Guarda los horarios creados en la base de datos
 function guardarHorariosAdmin(fechaTarget) {
+
+    // Si no se recibe fecha, tomarla del input del administrador
+    if (!fechaTarget) {
+        const inputFechaAdmin = document.getElementById("adminFecha");
+
+        if (inputFechaAdmin) {
+            fechaTarget = inputFechaAdmin.value;
+        }
+    }
+
     if (!fechaTarget) {
         alert("⚠️ Por favor seleccioná una fecha en el panel de administración.");
         return;
     }
 
-    const filas = document.querySelectorAll("#listaHorariosAdmin .fila-horario");
+    const filas = document.querySelectorAll(
+        "#listaHorariosAdmin .fila-horario"
+    );
+
     const nuevosTurnos = [];
 
     filas.forEach(fila => {
-        const hh = fila.querySelector(".admin-hh").value;
-        const mm = fila.querySelector(".admin-mm").value;
-        const cuposInput = fila.querySelector(".input-cupos").value;
+
+        const hhElem = fila.querySelector(".admin-hh");
+        const mmElem = fila.querySelector(".admin-mm");
+        const cuposElem = fila.querySelector(".input-cupos");
+
+        if (!hhElem || !mmElem || !cuposElem) return;
+
+        const hh = hhElem.value;
+        const mm = mmElem.value;
+
+        let cantCupos = parseInt(cuposElem.value, 10);
+
+        if (isNaN(cantCupos) || cantCupos < 1) {
+            cantCupos = 1;
+        }
 
         const horaTexto = `${hh}:${mm} hs`;
-        const cantCupos = parseInt(cuposInput, 10) || 1;
 
-        // Evitar duplicados al armar el array final
+        // Evitar horarios duplicados
         if (!nuevosTurnos.some(t => t.hora === horaTexto)) {
             nuevosTurnos.push({
                 hora: horaTexto,
@@ -457,75 +461,62 @@ function guardarHorariosAdmin(fechaTarget) {
         }
     });
 
-    // Ordenar los horarios de menor a mayor
-    nuevosTurnos.sort((a, b) => a.hora.localeCompare(b.hora));
+    // Ordenar cronológicamente
+    nuevosTurnos.sort((a, b) => {
+        return a.hora.localeCompare(b.hora);
+    });
 
-    // Guardar en el objeto global y en localStorage
-    disponibilidadTurnos[fechaTarget] = nuevosTurnos;
-    localStorage.setItem("turnos_db", JSON.stringify(disponibilidadTurnos));
+    // Recuperar la base actual
+    const baseActual = JSON.parse(
+        localStorage.getItem("turnos_db")
+    ) || {};
 
-    // Refrescar el cliente si la fecha coincide
-    if (typeof fechaSeleccionada !== "undefined" && fechaSeleccionada === fechaTarget) {
-        if (typeof renderizarTurnosDisponibles === "function") {
-            renderizarTurnosDisponibles(fechaTarget);
-        }
+    // Guardar los nuevos horarios para ESA fecha
+    baseActual[fechaTarget] = nuevosTurnos;
+
+    // Actualizar variable global
+    disponibilidadTurnos = baseActual;
+
+    // Persistir
+    localStorage.setItem(
+        "turnos_db",
+        JSON.stringify(baseActual)
+    );
+
+    // Si estamos configurando la fecha actualmente seleccionada
+    // en la página de reservas, actualizar inmediatamente la pantalla.
+    const inputFechaReserva = document.getElementById("fecha");
+
+    if (
+        inputFechaReserva &&
+        inputFechaReserva.value === fechaTarget
+    ) {
+        fechaSeleccionada = fechaTarget;
+        cargarTurnosDelDia(fechaTarget);
     }
 
-    alert(`✅ ¡Horarios guardados con éxito para la fecha ${fechaTarget}!`);
-}
-window.guardarHorariosAdmin = guardarHorariosAdmin;
-window.validarHoraUnicaEnLinea = validarHoraUnicaEnLinea;
+    alert(
+        `✅ ¡Horarios guardados con éxito para la fecha ${fechaTarget}!\n\n` +
+        `Horarios cargados: ${nuevosTurnos.length}`
+    );
 
-function guardarConfiguracionAdmin() {
-    const fecha = document.getElementById("adminFecha").value;
-    if (!fecha) { alert("Seleccioná una fecha válida."); return; }
-
-    const filas = document.querySelectorAll(".fila-horario");
-    const horasVistas = new Set();
-    const nuevosTurnos = [];
-
-    for (let fila of filas) {
-        const hh = fila.querySelector(".admin-hh").value;
-        const mm = fila.querySelector(".admin-mm").value;
-        let cupos = parseInt(fila.querySelector(".admin-cupos").value, 10);
-        const horaFinal = `${hh}:${mm} hs`;
-
-        if (horasVistas.has(horaFinal)) {
-            alert(`El horario "${horaFinal}" está duplicado.`);
-            return;
-        }
-        if (isNaN(cupos) || cupos < 0 || cupos > 1) {
-            alert("Los cupos solo pueden ser 0 o 1.");
-            return;
-        }
-        horasVistas.add(horaFinal);
-        nuevosTurnos.push({ hora: horaFinal, cupos: cupos });
-    }
-
-    nuevosTurnos.sort((a, b) => a.hora.localeCompare(b.hora));
-    disponibilidadTurnos[fecha] = nuevosTurnos;
-    localStorage.setItem("turnos_db", JSON.stringify(disponibilidadTurnos));
-
-    alert("¡Horarios guardados con éxito!");
     cerrarHorarios();
-
-    if (document.getElementById("fecha") && document.getElementById("fecha").value === fecha) {
-        cargarTurnosDelDia(fecha);
-    }
 }
-window.guardarConfiguracionAdmin = guardarConfiguracionAdmin;
 
-// Función para mostrar el mensaje dentro del div existente en el HTML
+window.guardarHorariosAdmin = guardarHorariosAdmin;
+
+// ==========================================
+// MENSAJES DE ERROR / CONFIRMACIÓN
+// ==========================================
 function mostrarErrorLocal(mensaje) {
     const boxError = document.getElementById('error-formulario-superior');
     if (boxError) {
         boxError.innerText = mensaje;
-        boxError.style.display = 'block'; // Lo hacemos visible
-        boxError.scrollIntoView({ behavior: 'smooth', block: 'center' }); // Scroll suave hasta el error
+        boxError.style.display = 'block';
+        boxError.scrollIntoView({ behavior: 'smooth', block: 'center' });
     }
 }
 
-// Función para ocultar el mensaje cuando la validación pasa
 function ocultarErrorLocal() {
     const boxError = document.getElementById('error-formulario-superior');
     if (boxError) {
@@ -534,7 +525,6 @@ function ocultarErrorLocal() {
     }
 }
 
-// Función para mostrar el cartel de confirmación
 function mostrarConfirmacionReserva(datosReserva) {
     const modal = document.getElementById('modal-confirmacion');
     const contenedorDetalles = document.getElementById('detalles-reserva-texto');
@@ -553,71 +543,39 @@ function mostrarConfirmacionReserva(datosReserva) {
     }
 }
 
-// Función para cerrar el cartel
 function cerrarModalConfirmacion() {
     const modal = document.getElementById('modal-confirmacion');
     if (modal) {
         modal.style.display = 'none';
     }
+    window.location.reload();
 }
-function renderizarTurnosDisponibles(fecha) {
-    const contenedor = document.getElementById('contenedor-horarios'); // Tu contenedor
-    if (!contenedor) return;
 
-    contenedor.innerHTML = ""; // Limpiamos los anteriores
-
-    const turnos = disponibilidadTurnos[fecha] || [];
-
-    turnos.forEach(turno => {
-        // ⚠️ Si no hay cupos, omitimos el botón o lo mostramos deshabilitado
-        if (turno.cupos <= 0) {
-            /* OPCIÓN A: No mostrar el horario directamente */
-            return; 
-
-            /* OPCIÓN B: Mostrarlo pero deshabilitado (gris)
-            const btn = document.createElement('button');
-            btn.className = 'btn-horario deshabilitado';
-            btn.disabled = true;
-            btn.innerText = `${turno.hora} (Agotado)`;
-            contenedor.appendChild(btn);
-            return;
-            */
-        }
-
-        // Si hay cupo, mostramos el botón normalmente
-        const btn = document.createElement('button');
-        btn.className = 'btn-horario';
-        btn.innerText = turno.hora;
-        btn.onclick = () => seleccionarHorario(turno.hora);
-        contenedor.appendChild(btn);
-    });
-}
+// ==========================================
+// ENVÍO DE RESERVA
+// ==========================================
 async function enviarReserva(e) {
-    // Si viene un evento (ej. onSubmit del formulario), prevenimos el recargo de página
     if (e && e.preventDefault) {
         e.preventDefault();
     }
 
-    ocultarErrorLocal(); // Ocultamos errores anteriores
+    ocultarErrorLocal();
 
-    const nombreInput = document.getElementById('nombre');
-    const emailInput = document.getElementById('email');
-    const telInput = document.getElementById('telefono');
-    const selectParticipantes = document.getElementById('cantidad-participantes');
-    const vendedorRadio = document.querySelector('input[name="vendedor"]:checked');
-    const btnPagar = document.getElementById('btnPagar');
+    const nombreInput    = document.getElementById('nombre');
+    const emailInput     = document.getElementById('email');
+    const telInput       = document.getElementById('telefono');
+    const selectPartic   = document.getElementById('cantidad-participantes');
+    const tipoPagoRadio  = document.querySelector('input[name="tipoPago"]:checked');
+    const btnPagar       = document.getElementById('btnPagar');
 
-    // Captura del tipo de pago (Seña o Total)
-    const tipoPagoRadio = document.querySelector('input[name="tipoPago"]:checked');
-    const tipoPago = tipoPagoRadio ? tipoPagoRadio.value : 'sena';
+    const nombre       = nombreInput  ? nombreInput.value.trim()  : "";
+    const email        = emailInput   ? emailInput.value.trim()   : "";
+    const participantes= selectPartic ? selectPartic.value        : "";
+    const telefonoVal  = telInput     ? telInput.value.trim()     : "";
+    const tipoPago     = tipoPagoRadio ? tipoPagoRadio.value      : 'sena';
+    const esValidoTel  = (typeof iti !== "undefined" && iti) ? iti.isValidNumber() : true;
 
-    const nombre = nombreInput ? nombreInput.value.trim() : "";
-    const email = emailInput ? emailInput.value.trim() : "";
-    const participantes = selectParticipantes ? selectParticipantes.value : "";
-    const telefonoVal = telInput ? telInput.value.trim() : "";
-    const esValidoTel = (typeof iti !== "undefined" && iti) ? iti.isValidNumber() : true;
-
-    // 🔍 VALIDACIONES
+    // VALIDACIONES
     if (!fechaSeleccionada) {
         mostrarErrorLocal("⚠️ Por favor, seleccioná una fecha para la reserva.");
         return;
@@ -647,7 +605,7 @@ async function enviarReserva(e) {
         return;
     }
 
-    // Comprobar disponibilidad de cupo
+    // Verificar cupo
     const turnosDelDia = disponibilidadTurnos[fechaSeleccionada];
     const turno = turnosDelDia ? turnosDelDia.find(t => t.hora === grupoSeleccionado) : null;
 
@@ -656,309 +614,132 @@ async function enviarReserva(e) {
         return;
     }
 
-    // PROCESAMIENTO DE RESERVA
+    // ✅ FIX 2: Guardamos la hora ANTES de resetear grupoSeleccionado
+    const horaReservada = grupoSeleccionado;
+
     if (btnPagar) {
         btnPagar.disabled = true;
         btnPagar.innerText = "Procesando...";
     }
 
     try {
-        // 1. Descontar cupo y guardar en localStorage
-      // 1. Descontar cupo y guardar en localStorage
-turno.cupos -= 1;
-localStorage.setItem("turnos_db", JSON.stringify(disponibilidadTurnos));
+        // 1. Descontar cupo
+        turno.cupos -= 1;
+        localStorage.setItem("turnos_db", JSON.stringify(disponibilidadTurnos));
 
-// 🔄 DESHABILITAR O REMOVER EL HORARIO RECIÉN RESERVADO EN EL DOM
-if (turno.cupos <= 0) {
-    // Buscamos todos los botones/elementos de horarios
-    const elementosHorario = document.querySelectorAll('.btn-horario, .opcion-horario, [data-hora]');
-    
-    elementosHorario.forEach(el => {
-        // Comparamos si el texto o atributo coincide con el horario reservado
-        if (el.innerText.includes(grupoSeleccionado) || el.dataset.hora === grupoSeleccionado) {
-            el.classList.add('deshabilitado');
-            el.disabled = true;
-            el.style.opacity = '0.3';
-            el.style.pointerEvents = 'none';
-            el.innerText = `${grupoSeleccionado} (Agotado)`;
-        }
-    });
-}
+        // 2. Refrescar visualmente los turnos (usando el ID correcto del contenedor)
+        // ✅ FIX 2b: Llamamos a cargarTurnosDelDia que usa el ID real "contenedorGrupos"
+        cargarTurnosDelDia(fechaSeleccionada);
 
-// Reseteamos el horario seleccionado para que no quede marcado
-grupoSeleccionado = null;
-
-// 👇 AGREGÁ ESTA LÍNEA (Usá el nombre exacto de tu función que dibuja los turnos en el DOM)
-        renderizarTurnosDisponibles(fechaSeleccionada)
-        // 2. Guardar en el historial
+        // 3. Guardar en el historial
         let historial = JSON.parse(localStorage.getItem("historial_reservas")) || [];
         historial.push({
             fecha: fechaSeleccionada,
-            hora: grupoSeleccionado,
-            modalidad: typeof modalidadSeleccionada !== "undefined" ? modalidadSeleccionada : "Estándar",
+            hora: horaReservada,                                               // ← hora guardada antes del reset
+            modalidad: typeof misionSeleccionada !== "undefined" ? misionSeleccionada : "Estándar",
             participantes: participantes,
             nombre: nombre,
             email: email,
-            telefono: typeof iti !== "undefined" && iti ? iti.getNumber() : telefonoVal,
-            vendedor: vendedorRadio ? vendedorRadio.value : "Sin definir",
+            telefono: (typeof iti !== "undefined" && iti) ? iti.getNumber() : telefonoVal,
+            vendedor: "Web",
             tipoPago: tipoPago === 'sena' ? 'Seña' : 'Total',
-            monto: typeof precioFinal !== "undefined" ? `$${precioFinal.toLocaleString('es-AR')}` : "-",
+            monto: `$${precioFinal.toLocaleString('es-AR')}`,
             fechaCreacion: new Date().toLocaleString()
         });
         localStorage.setItem("historial_reservas", JSON.stringify(historial));
 
-       // 3. Envío por EmailJS
-if (typeof emailjs !== "undefined" && typeof EMAILJS_PUBLIC_KEY !== "undefined") {
-    
-    // Limpiamos la hora para evitar el "hs hs" si ya trae "hs"
-    const horaLimpia = horaReservada ? horaReservada.replace(/hs/gi, '').trim() : "";
+        // ✅ FIX 3: Variables del templateParams alineadas con el esqueleto de EmailJS
+        if (typeof emailjs !== "undefined") {
+            const horaLimpia = horaReservada.replace(/\s*hs\s*/gi, '').trim();
 
-    const templateParams = {
-        to_name: nombre,
-        to_email: email,
-        nombre: nombre,                          // Para {{nombre}}
-        dia: fechaSeleccionada || "",             // Para {{dia}} o {{fecha}}
-        fecha: fechaSeleccionada || "",           // Respaldo por si usás {{fecha}}
-        hora: horaLimpia,                        // Para {{hora}}
-        jugadores: participantes || "",           // Para {{jugadores}} o {{participantes}}
-        participantes: participantes || "",       // Respaldo
-        experiencia: typeof modalidadSeleccionada !== "undefined" ? modalidadSeleccionada : "Estándar",
-        pago: tipoPago === 'sena' ? 'Seña' : 'Total', // Para {{pago}}
-        precio: typeof precioFinal !== "undefined" ? `$${precioFinal.toLocaleString('es-AR')}` : "-"
-    };
+            const templateParams = {
+                to_name:           nombre,
+                to_email:          email,
+                nombre:            nombre,
+                dia_fecha:         fechaSeleccionada,           // {{dia_fecha}}
+                hora:              horaLimpia,                  // {{hora}}
+                cantidad_jugadores: participantes,              // {{cantidad_jugadores}}
+                modalidad:         misionSeleccionada || "Estándar", // {{modalidad}}
+                pago:              tipoPago === 'sena' ? 'Seña (Abonar el resto de la sala antes de ingresar)' : 'Total', // {{pago}}
+                precio:            `$${precioFinal.toLocaleString('es-AR')}`
+            };
 
-    await Promise.race([
-        emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, templateParams),
-        new Promise((_, reject) => setTimeout(() => reject(new Error("Timeout en EmailJS")), 4000))
-    ]);
-}
+            await Promise.race([
+                emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, templateParams),
+                new Promise((_, reject) => setTimeout(() => reject(new Error("Timeout en EmailJS")), 4000))
+            ]);
+        }
 
-        // 4. Mostrar cartel de confirmación con los datos capturados
-        const datosReserva = {
-            nombre: nombre,
-            fecha: fechaSeleccionada,
-            hora: grupoSeleccionado,
+        // 4. Mostrar confirmación
+        mostrarConfirmacionReserva({
+            nombre:   nombre,
+            fecha:    fechaSeleccionada,
+            hora:     horaReservada,                            // ← hora correcta
             jugadores: participantes
-        };
-
-        mostrarConfirmacionReserva(datosReserva);
+        });
 
     } catch (err) {
         console.error("Detalle en el proceso de reserva:", err);
         mostrarErrorLocal("Hubo un detalle al procesar la reserva, pero fue registrada.");
     } finally {
-        // Restablecemos siempre el botón para que no quede "Procesando..."
         if (btnPagar) {
             btnPagar.disabled = false;
-            btnPagar.innerText = "Pagar / Reservar";
+            btnPagar.innerText = "Confirmar Reserva";
         }
     }
 }
+window.enviarReserva = enviarReserva;
 
-// Función para renderizar los botones de horarios/turnos
-function renderizarHorarios(fecha) {
-    const contenedorHorarios = document.getElementById('contenedor-horarios'); // Asegúrate de usar el ID real de tu HTML
-    if (!contenedorHorarios) return;
-
-    contenedorHorarios.innerHTML = ""; // Limpiar horarios anteriores
-
-    const turnosDelDia = disponibilidadTurnos[fecha];
-
-    if (!turnosDelDia || turnosDelDia.length === 0) {
-        contenedorHorarios.innerHTML = "<p>No hay horarios disponibles para esta fecha.</p>";
-        return;
-    }
-
-    // 🔍 FILTRADO: Solo tomamos los turnos que tengan más de 0 cupos
-    const turnosDisponibles = turnosDelDia.filter(turno => turno.cupos > 0);
-
-    // Si todos los horarios están agotados
-    if (turnosDisponibles.length === 0) {
-        contenedorHorarios.innerHTML = "<p>Todos los turnos de este día ya fueron reservados.</p>";
-        return;
-    }
-
-    // Dibujar únicamente los horarios con cupos
-    turnosDisponibles.forEach(turno => {
-        const btnHora = document.createElement('button');
-        btnHora.classList.add('btn-horario');
-        btnHora.innerText = turno.hora;
-
-        // Evento al seleccionar un horario
-        btnHora.onclick = () => {
-            // Desmarcar otros botones si tenías clase 'activo' o 'seleccionado'
-            document.querySelectorAll('.btn-horario').forEach(b => b.classList.remove('seleccionado'));
-            btnHora.classList.add('seleccionado');
-            
-            grupoSeleccionado = turno.hora; // Guardar la hora elegida
-        };
-
-        contenedorHorarios.appendChild(btnHora);
-    });
-}
-function guardarHorariosAdmin() {
-    // 1. Obtenemos la fecha seleccionada en el modal de admin
-    const inputFechaAdmin = document.getElementById("fechaAdmin") || document.getElementById("fecha");
-    
-    if (!inputFechaAdmin || !inputFechaAdmin.value) {
-        alert("Por favor, selecciona una fecha primero.");
-        return;
-    }
-
-    const fechaKey = inputFechaAdmin.value; // Formato YYYY-MM-DD (ej: 2026-08-17)
-    const nuevosHorarios = [];
-
-    // 2. Leemos cada fila de horarios que agregaste en el modal
-    const filas = document.querySelectorAll("#listaHorariosAdmin .fila-horario") || document.querySelectorAll(".fila-horario");
-
-    filas.forEach(fila => {
-        const inputHora = fila.querySelector("input[type='text']") || fila.querySelector(".input-hora");
-        const inputCupos = fila.querySelector("input[type='number']") || fila.querySelector(".input-cupos");
-
-        if (inputHora && inputHora.value.trim() !== "") {
-            nuevosHorarios.push({
-                hora: inputHora.value.trim(),
-                cupos: inputCupos ? (parseInt(inputCupos.value, 10) || 1) : 1
-            });
-        }
-    });
-
-    // 3. Si no hay filas pero usaste agregarFilaHorario, guardamos lo que haya
-    if (nuevosHorarios.length === 0) {
-        alert("Agregá al menos un horario antes de guardar.");
-        return;
-    }
-
-    // 4. Actualizamos la base de datos local
-    disponibilidadTurnos[fechaKey] = nuevosHorarios;
-    localStorage.setItem("turnos_db", JSON.stringify(disponibilidadTurnos));
-
-    alert(`¡Horarios guardados correctamente para el ${fechaKey}!`);
-
-    // 5. Refrescamos automáticamente la pantalla principal de reservas
-    if (typeof cargarTurnosDelDia === "function") {
-        cargarTurnosDelDia(fechaKey);
-    }
-
-    // 6. Cerramos el modal si tenés una función para eso
-    const modal = document.getElementById("modalHorarios");
-    if (modal) modal.style.display = "none";
-}
-// Cargar lo que haya en el almacenamiento local
-
-
-// Asignar el horario del 18 de agosto
-// AL INICIO DE TU SCRIPT.JS:
-// Lee PRIMERO el localStorage. Si no existe, toma la base inicial.
-
-// Guardar inmediatamente la actualización
-localStorage.setItem("turnos_db", JSON.stringify(disponibilidadTurnos));
-
-document.addEventListener("DOMContentLoaded", function() {
-    const inputFecha = document.getElementById("fecha");
-    
-    // Si la fecha seleccionada es el 18 o la asignamos por defecto:
-    if (inputFecha) {
-        if (!inputFecha.value) {
-            inputFecha.value = "2026-08-18";
-        }
-        
-        // Cargar los turnos
-        cargarTurnosDelDia(inputFecha.value);
-
-        // Escuchar cuando el usuario cambia la fecha en el calendario
-        inputFecha.addEventListener("change", function() {
-            cargarTurnosDelDia(this.value);
-        });
-    }
-});
-
-// Variable global para guardar el monto actual a cobrar
-
+// ==========================================
+// CÁLCULO DE PRECIO
+// ==========================================
 function calcularPrecioReserva() {
     const selectParticipantes = document.getElementById('cantidad-participantes');
     const cantParticipantes = selectParticipantes ? parseInt(selectParticipantes.value, 10) : 0;
     const tipoPagoRadio = document.querySelector('input[name="tipoPago"]:checked');
     const tipoPago = tipoPagoRadio ? tipoPagoRadio.value : 'sena';
 
-    // 1. Leemos la modalidad global
-    let modTexto = (typeof modalidadSeleccionada !== "undefined" && modalidadSeleccionada) 
-        ? String(modalidadSeleccionada) 
+    const modTexto = (typeof misionSeleccionada !== "undefined" && misionSeleccionada) 
+        ? String(misionSeleccionada) 
         : "";
 
-    // 2. Normalizamos: pasamos a minúsculas y quitamos tildes/acentos
     const modLimpia = modTexto
         .toLowerCase()
         .normalize("NFD")
-        .replace(/[\u0300-\u036f]/g, ""); // "Misión Extendida" -> "mision extendida"
+        .replace(/[\u0300-\u036f]/g, "");
 
-    // Evaluamos si es extendida de forma flexible
-    const esExtendida = modLimpia.includes("extendid") || modLimpia.includes("mision 2") || modLimpia.includes("larga");
+    const esExtendida = modLimpia.includes("extendid");
 
-    console.log("🔍 DIAGNÓSTICO PRECIO:", {
-        modalidadOriginal: modTexto,
-        modalidadLimpia: modLimpia,
-        esExtendida: esExtendida,
-        tipoPago: tipoPago
-    });
-
-    // 3. Calculamos el precio base total
-    let precioTotalSala = 0;
-    if (cantParticipantes > 0) {
-        const tarifaPorPersona = esExtendida ? 12000 : 9000;
-        precioTotalSala = cantParticipantes * tarifaPorPersona;
-    }
-
-    // 4. Evaluamos según el tipo de pago
+    // Precio seña fijo / precio total por participantes
     if (tipoPago === 'sena') {
         precioFinal = esExtendida ? 20000 : 15000;
     } else {
-        precioFinal = precioTotalSala;
-    }
-
-    // 5. Actualizamos el HTML
-    const precioTxt = document.getElementById('precioTxt');
-    if (precioTxt) {
-        if (cantParticipantes === 0 && tipoPago === 'total') {
-            precioTxt.innerText = "$0";
+        if (cantParticipantes > 0) {
+            const tabla = esExtendida ? tablaPrecios["Extendida"] : tablaPrecios["Express"];
+            precioFinal = tabla[String(cantParticipantes)] || 0;
         } else {
-            precioTxt.innerText = `$${precioFinal.toLocaleString('es-AR')}`;
+            precioFinal = 0;
         }
     }
-}
 
-// Aseguramos que el selector de participantes ejecute esta función
-function actualizarPrecioPorParticipantes() {
-    calcularPrecioReserva();
-}
-
-document.addEventListener('keydown', function(event) {
-    if ((event.altKey && (event.key === 'm' || event.key === 'M')) || event.key === 'F9') {
-        event.preventDefault();
-        abrirMonitorConPassword();
+    const precioTxt = document.getElementById('precioTxt');
+    if (precioTxt) {
+        precioTxt.innerText = precioFinal > 0 ? `$${precioFinal.toLocaleString('es-AR')}` : "$0";
     }
-});
-
-// Solicitud de contraseña para abrir el monitor
-
-
-// Función para cerrar el modal
-function cerrarMonitor() {
-    const modal = document.getElementById("modalMonitor");
-    if (modal) modal.style.display = "none";
 }
+window.calcularPrecioReserva = calcularPrecioReserva;
 
-// Función principal para leer localStorage y mostrar la tabla
+// ==========================================
+// MONITOR: TABLA DE RESERVAS
+// ==========================================
 function renderizarTablaReservas() {
     const contenedor = document.getElementById("tablaSalaContenedor");
     const inputFecha = document.getElementById("monitorFecha");
     if (!contenedor) return;
 
-    // Leemos el historial guardado
     const historial = JSON.parse(localStorage.getItem("historial_reservas")) || [];
     const fechaFiltro = inputFecha ? inputFecha.value : "";
 
-    // Filtrar si hay fecha seleccionada (o mostrar todas si se borra el filtro)
     const reservasFiltradas = fechaFiltro 
         ? historial.filter(r => r.fecha === fechaFiltro)
         : historial;
@@ -968,7 +749,6 @@ function renderizarTablaReservas() {
         return;
     }
 
-    // Construcción de la tabla HTML
     let html = `
         <table style="width:100%; border-collapse: collapse; background: #fff; font-size: 13px; color: #333; border-radius:6px; overflow:hidden;">
             <thead>
@@ -986,15 +766,13 @@ function renderizarTablaReservas() {
             <tbody>
     `;
 
-    reservasFiltradas.forEach((res, index) => {
-        // Buscamos el índice real dentro del array global de historial para poder borrar la correcta
+    reservasFiltradas.forEach((res) => {
         const indexReal = historial.indexOf(res);
-
         html += `
             <tr style="border-bottom: 1px solid #ddd;">
                 <td style="padding: 8px; border: 1px solid #ddd;"><strong>${res.fecha || '-'}</strong></td>
                 <td style="padding: 8px; border: 1px solid #ddd;">${res.hora || '-'}</td>
-                <td style="padding: 8px; border: 1px solid #ddd;">${res.mision || res.modalidad || '-'}</td>
+                <td style="padding: 8px; border: 1px solid #ddd;">${res.modalidad || '-'}</td>
                 <td style="padding: 8px; border: 1px solid #ddd;">
                     <strong>${res.nombre || '-'}</strong><br>
                     <small style="color:#666;">${res.email || ''}</small>
@@ -1002,7 +780,7 @@ function renderizarTablaReservas() {
                 <td style="padding: 8px; border: 1px solid #ddd;">${res.telefono || '-'}</td>
                 <td style="padding: 8px; border: 1px solid #ddd; text-align:center;">${res.participantes || '-'}</td>
                 <td style="padding: 8px; border: 1px solid #ddd;">
-                    <span style="font-weight:bold; color: #27ae60;">${res.montoAbonado || res.precio || ''}</span><br>
+                    <span style="font-weight:bold; color: #27ae60;">${res.monto || ''}</span><br>
                     <small style="color:#888;">${res.tipoPago || ''}</small>
                 </td>
                 <td style="padding: 8px; border: 1px solid #ddd; text-align:center;">
@@ -1016,17 +794,16 @@ function renderizarTablaReservas() {
     contenedor.innerHTML = html;
 }
 
-// Función para eliminar una reserva del historial
 function eliminarReservaAdmin(index) {
     if (confirm("⚠️ ¿Estás seguro de que querés borrar esta reserva de la base de datos?")) {
         let historial = JSON.parse(localStorage.getItem("historial_reservas")) || [];
         historial.splice(index, 1);
         localStorage.setItem("historial_reservas", JSON.stringify(historial));
-        renderizarTablaReservas(); // Volvemos a pintar la tabla
+        renderizarTablaReservas();
     }
 }
+window.eliminarReservaAdmin = eliminarReservaAdmin;
 
-// Evento para que al cambiar la fecha del filtro se actualice la lista
 document.addEventListener("DOMContentLoaded", function() {
     const inputFechaMonitor = document.getElementById("monitorFecha");
     if (inputFechaMonitor) {
@@ -1034,10 +811,12 @@ document.addEventListener("DOMContentLoaded", function() {
     }
 });
 
+// ==========================================
+// CARRUSEL Y LIGHTBOX
+// ==========================================
 let indiceCarrusel = 0;
 let indiceLightbox = 0;
 
-// --- 1. CARRUSEL PRINCIPAL ---
 function mostrarDiapositiva(indice) {
     const elementos = document.querySelectorAll('.carrusel-slide .carrusel-img');
     const puntos = document.querySelectorAll('.carrusel-puntos .punto');
@@ -1054,19 +833,13 @@ function mostrarDiapositiva(indice) {
 
     elementos.forEach((el) => {
         el.classList.remove('activa');
-        if (el.tagName === 'VIDEO') {
-            el.pause();
-        }
+        if (el.tagName === 'VIDEO') el.pause();
     });
 
     puntos.forEach((p) => p.classList.remove('activo'));
 
-    if (elementos[indiceCarrusel]) {
-        elementos[indiceCarrusel].classList.add('activa');
-    }
-    if (puntos[indiceCarrusel]) {
-        puntos[indiceCarrusel].classList.add('activo');
-    }
+    if (elementos[indiceCarrusel]) elementos[indiceCarrusel].classList.add('activa');
+    if (puntos[indiceCarrusel]) puntos[indiceCarrusel].classList.add('activo');
 }
 
 function moverCarrusel(direccion) {
@@ -1077,8 +850,6 @@ function irAFoto(indice) {
     mostrarDiapositiva(indice);
 }
 
-
-// --- 2. LIGHTBOX CON SOPORTE DE VIDEO ---
 function abrirLightbox(elemento) {
     const elementos = Array.from(document.querySelectorAll('.carrusel-slide .carrusel-img'));
     const index = elementos.indexOf(elemento);
@@ -1093,32 +864,24 @@ function abrirLightbox(elemento) {
 
 function actualizarContenidoLightbox() {
     const elementos = document.querySelectorAll('.carrusel-slide .carrusel-img');
-    const imgAmpliada = document.getElementById('lightbox-img');
+    const imgAmpliada  = document.getElementById('lightbox-img');
     const videoAmpliado = document.getElementById('lightbox-video');
-    const videoSource = document.getElementById('lightbox-video-source');
+    const videoSource   = document.getElementById('lightbox-video-source');
 
     if (elementos.length === 0 || !elementos[indiceLightbox]) return;
 
     const elementoActual = elementos[indiceLightbox];
 
     if (elementoActual.tagName === 'VIDEO') {
-        // Ocultar imagen y mostrar video
         imgAmpliada.style.display = 'none';
-        
-        // Pausar video del carrusel de fondo
         elementoActual.pause();
-
-        // Cargar y reproducir en el modal
         const fuenteOriginal = elementoActual.querySelector('source') ? elementoActual.querySelector('source').src : elementoActual.src;
         videoSource.src = fuenteOriginal;
         videoAmpliado.load();
         videoAmpliado.style.display = 'block';
     } else {
-        // Pausar video del modal si estaba sonando
         videoAmpliado.pause();
         videoAmpliado.style.display = 'none';
-
-        // Mostrar imagen
         imgAmpliada.src = elementoActual.src;
         imgAmpliada.style.display = 'block';
     }
@@ -1130,38 +893,24 @@ function cambiarFotoLightbox(direccion) {
 
     indiceLightbox += direccion;
 
-    if (indiceLightbox >= elementos.length) {
-        indiceLightbox = 0;
-    } else if (indiceLightbox < 0) {
-        indiceLightbox = elementos.length - 1;
-    }
+    if (indiceLightbox >= elementos.length) indiceLightbox = 0;
+    else if (indiceLightbox < 0) indiceLightbox = elementos.length - 1;
 
     actualizarContenidoLightbox();
-
-    // Sincronizar el carrusel de fondo
     mostrarDiapositiva(indiceLightbox);
 }
 
 function cerrarLightbox() {
     const modal = document.getElementById('lightbox-modal');
     const videoAmpliado = document.getElementById('lightbox-video');
-    
-    if (videoAmpliado) {
-        videoAmpliado.pause();
-    }
-    
-    if (modal) {
-        modal.style.display = 'none';
-    }
+    if (videoAmpliado) videoAmpliado.pause();
+    if (modal) modal.style.display = 'none';
 }
 
 function cerrarLightboxEnFondo(e) {
-    if (e.target.id === 'lightbox-modal') {
-        cerrarLightbox();
-    }
+    if (e.target.id === 'lightbox-modal') cerrarLightbox();
 }
 
-// Teclas para el Lightbox
 document.addEventListener('keydown', function(e) {
     const modal = document.getElementById('lightbox-modal');
     if (modal && modal.style.display === 'flex') {
@@ -1171,45 +920,42 @@ document.addEventListener('keydown', function(e) {
     }
 });
 
-function seleccionarFecha(fecha) {
-    fechaSeleccionada = fecha;
+// Exportar funciones al scope global
+window.mostrarDiapositiva = mostrarDiapositiva;
+window.moverCarrusel = moverCarrusel;
+window.irAFoto = irAFoto;
+window.abrirLightbox = abrirLightbox;
+window.cambiarFotoLightbox = cambiarFotoLightbox;
+window.cerrarLightbox = cerrarLightbox;
+window.cerrarLightboxEnFondo = cerrarLightboxEnFondo;
+window.cerrarModalConfirmacion = cerrarModalConfirmacion;
+window.renderizarTablaReservas = renderizarTablaReservas;
 
-    // ⚠️ CRUCIAL: Volver a cargar la base de datos actualizada del localStorage
-    const turnosGuardados = localStorage.getItem("turnos_db");
-    if (turnosGuardados) {
-        disponibilidadTurnos = JSON.parse(turnosGuardados);
-    }
+// ==========================================
+// INICIALIZACIÓN
+// ==========================================
+const turnosGuardados = localStorage.getItem("turnos_db");
 
-    // Dibujar los horarios para esta fecha
-    renderizarHorariosDeLaFecha(fechaSeleccionada);
+if (turnosGuardados) {
+    disponibilidadTurnos = JSON.parse(turnosGuardados);
+} else {
+    localStorage.setItem(
+        "turnos_db",
+        JSON.stringify(disponibilidadTurnos)
+    );
 }
 
-function renderizarHorariosDeLaFecha(fecha) {
-    const turnos = disponibilidadTurnos[fecha] || [];
-
-    turnos.forEach(t => {
-        const elementoBoton = document.getElementById(`turno-${t.hora}`); // Adaptá el ID según tu HTML
-        
-        if (elementoBoton) {
-            if (t.cupos <= 0) {
-                elementoBoton.disabled = true;
-                elementoBoton.classList.add('agotado');
-                elementoBoton.style.display = 'none'; // O usar display: 'none' si querés ocultarlo por completo
-            } else {
-                elementoBoton.disabled = false;
-                elementoBoton.classList.remove('agotado');
-                elementoBoton.style.display = 'block';
-            }
-        }
-    });
-}
-
-function cerrarModalConfirmacion() {
-    const modal = document.getElementById('modal-confirmacion');
-    if (modal) {
-        modal.style.display = 'none';
-    }
+document.addEventListener("DOMContentLoaded", function() {
+    const inputFecha = document.getElementById("fecha");
     
-    // 🔄 Recarga la página para refrescar el estado limpio de los turnos
-    window.location.reload();
-}
+    if (inputFecha) {
+        if (!inputFecha.value) {
+            inputFecha.value = "2026-08-18";
+        }
+        cargarTurnosDelDia(inputFecha.value);
+
+        inputFecha.addEventListener("change", function() {
+            cargarTurnosDelDia(this.value);
+        });
+    }
+});
