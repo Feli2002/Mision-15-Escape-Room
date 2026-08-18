@@ -65,25 +65,41 @@
 <!-- SECCIÓN NUESTRA SALA (CARRUSEL) -->
 <div class="nuestra-sala-box">
     <h2 class="seccion-titulo">NUESTRA SALA</h2>
-    
+
     <div class="carrusel-container">
         <button class="carrusel-btn prev" onclick="moverCarrusel(-1)">&#10094;</button>
-        
-        <div class="carrusel-slide">
-     <div class="carrusel-slide">
-    <img src="PIZARRA Y MESSI0.jpg.jpeg" class="carrusel-img activa" alt="Sala Misión 15 - Imagen 1" onclick="abrirLightbox(this)">
-    <img src="MANOS EN ACCION0.jpg.jpeg" class="carrusel-img" alt="Sala Misión 15 - Imagen 2" onclick="abrirLightbox(this)">
-    <img src="ESCRITORIO EVIDENCIA0.jpg.jpeg" class="carrusel-img" alt="Sala Misión 15 - Imagen 3" onclick="abrirLightbox(this)">
 
-    <!-- Video cliqueable para pantalla completa -->
-    <video class="carrusel-img video-testimonios" controls preload="metadata" onclick="abrirLightbox(this)">
-        <source src="https://youtube.com/shorts/RBEyfC8-WT0?feature=share" type="video/mp4">
-    </video>
-</div>
+        <div class="carrusel-slide">
+
+            <img src="Imágenes de la sala/PIZARRA Y MESSI0.jpg.jpeg"
+                 class="carrusel-img activa"
+                 alt="Sala Misión 15 - Imagen 1"
+                 onclick="abrirLightbox(this)">
+
+            <img src="Imágenes de la sala/MANOS EN ACCION0.jpg.jpeg"
+                 class="carrusel-img"
+                 alt="Sala Misión 15 - Imagen 2"
+                 onclick="abrirLightbox(this)">
+
+            <img src="Imágenes de la sala/ESCRITORIO EVIDENCIA0.jpg.jpeg"
+                 class="carrusel-img"
+                 alt="Sala Misión 15 - Imagen 3"
+                 onclick="abrirLightbox(this)">
+
+            <!-- VIDEO -->
+            <iframe
+                src="https://www.youtube.com/embed/RBEyfC8-WT0"
+                class="carrusel-img video-carrusel"
+                title="Testimonio Misión15"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                allowfullscreen>
+            </iframe>
+
         </div>
 
         <button class="carrusel-btn next" onclick="moverCarrusel(1)">&#10095;</button>
     </div>
+</div>
 
     <!-- Indicadores para los 4 elementos (3 fotos + 1 video) -->
     <div class="carrusel-puntos">
@@ -97,9 +113,13 @@
         <!-- SECCIÓN TESTIMONIOS (INDEPENDIENTE) -->
         <div class="testimonios-box">
             <h2 class="seccion-titulo">TESTIMONIOS</h2>
-            <video class="video-testimonios" controls preload="metadata">
-                <source src="Videos/Video de testimonios.mp4" type="video/mp4"> 
-            </video>
+            <iframe
+    src="https://youtube.com/embed/AWWkAzbztxY"
+    class="video-testimonios"
+    title="Testimonio Misión15"
+    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+    allowfullscreen>
+</iframe>
         </div>
 
         <div class="info-general-grid">
