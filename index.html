@@ -33,7 +33,7 @@
         
         <div class="nav-links">
             <button onclick="mostrarVista('vista-inicio')" class="nav-btn">Inicio</button>
-            <button onclick="mostrarVista('vista-modalidades')" class="nav-btn gold-btn">Reservar Turno</button>
+            <button onclick="mostrarVista('vista-modalidades')" class="nav-btn gold-btn">Reservar</button>
             
             <!-- ENLACE A INSTAGRAM -->
             <a href="https://www.instagram.com/mision15.sala.escape/" target="_blank" rel="noopener noreferrer" class="ig-link" title="Síguenos en Instagram">
@@ -71,19 +71,14 @@
         
         <div class="carrusel-slide">
      <div class="carrusel-slide">
-    <img src="PIZARRA Y MESSI0.jpg.jpeg" class="carrusel-img activa" alt="Sala Misión 15 - Imagen 1" onclick="abrirLightbox(this)">
-    <img src="MANOS EN ACCION0.jpg.jpeg" class="carrusel-img" alt="Sala Misión 15 - Imagen 2" onclick="abrirLightbox(this)">
-    <img src="ESCRITORIO EVIDENCIA0.jpg.jpeg" class="carrusel-img" alt="Sala Misión 15 - Imagen 3" onclick="abrirLightbox(this)">
+    <img src="Imágenes de la sala/PIZARRA Y MESSI0.jpg.jpeg" class="carrusel-img activa" alt="Sala Misión 15 - Imagen 1" onclick="abrirLightbox(this)">
+    <img src="Imágenes de la sala/MANOS EN ACCION0.jpg.jpeg" class="carrusel-img" alt="Sala Misión 15 - Imagen 2" onclick="abrirLightbox(this)">
+    <img src="Imágenes de la sala/ESCRITORIO EVIDENCIA0.jpg.jpeg" class="carrusel-img" alt="Sala Misión 15 - Imagen 3" onclick="abrirLightbox(this)">
 
     <!-- Video cliqueable para pantalla completa -->
-<iframe class="carrusel-img video-testimonios" 
-        src="https://youtube.com/shorts/RBEyfC8-WT0?feature=share" 
-        title="Nuestra Sala" 
-        frameborder="0" 
-        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-        allowfullscreen>
-</iframe>
-
+    <video class="carrusel-img video-testimonios" controls preload="metadata" onclick="abrirLightbox(this)">
+        <source src="Videos/PRESENTACION.mp4" type="video/mp4">
+    </video>
 </div>
         </div>
 
@@ -103,7 +98,7 @@
         <div class="testimonios-box">
             <h2 class="seccion-titulo">TESTIMONIOS</h2>
             <video class="video-testimonios" controls preload="metadata">
-                <source src="Video de testimonios.mp4" type="video/mp4"> 
+                <source src="Videos/Video de testimonios.mp4" type="video/mp4"> 
             </video>
         </div>
 
@@ -144,55 +139,143 @@
     <section id="vista-modalidades" class="vista-seccion">
         <h2 class="seccion-titulo">ELEGÍ TU MISIÓN</h2>
         <div class="modalidades-grid">
-            
-            <div class="modalidad-card">
-                <div class="card-header">
-                    <h3>MISIÓN EXPRESS</h3>
-                    <span class="duracion">15 MINUTOS</span>
-                </div>
-                <p class="card-desc">La experiencia original de Misión15. Ideal para amigos, familias y quienes buscan adrenalina, diversión y trabajo en equipo en una misión contrarreloj.</p>
-                
-                <div class="specs-grid">
-                    <div><strong>Jugadores:</strong> 2 a 6</div>
-                    <div><strong>Edad:</strong> ATP <small>(&lt;11 años con adulto)</small></div>
-                    <div><strong>Dificultad:</strong> Media (6.5/10)</div>
-                </div>
 
-                <table class="precios-tabla">
-                    <tr><td>2 Participantes</td><td class="precio">$30.000</td></tr>
-                    <tr><td>3 Participantes</td><td class="precio">$40.000</td></tr>
-                    <tr><td>4 Participantes</td><td class="precio">$50.000</td></tr>
-                    <tr><td>5 Participantes</td><td class="precio">$60.000</td></tr>
-                    <tr><td>6 Participantes</td><td class="precio">$75.000</td></tr>
-                </table>
+    <!-- ================= EXPRESS ================= -->
+    <div class="modalidad-card">
 
-                <button class="btn-reservar" onclick="seleccionarMision('Express')">RESERVAR EXPRESS</button>
-            </div>
-
-            <div class="modalidad-card premium">
-                <div class="card-header">
-                    <h3>MISIÓN EXTENDIDA</h3>
-                    <span class="duracion">40 MINUTOS</span>
-                </div>
-                <p class="card-desc">Una investigación más larga, con nuevos enigmas y mayor dificultad. Recomendada para quienes ya conocen las salas de escape o buscan un desafío más intenso.</p>
-                
-                <div class="specs-grid">
-                    <div><strong>Jugadores:</strong> 2 a 6</div>
-                    <div><strong>Edad:</strong> ATP <small>(&lt;13 años con adulto)</small></div>
-                    <div><strong>Dificultad:</strong> Alta (7/10)</div>
-                </div>
-
-                <table class="precios-tabla">
-                    <tr><td>2 Participantes</td><td class="precio">$43.000</td></tr>
-                    <tr><td>3 Participantes</td><td class="precio">$59.000</td></tr>
-                    <tr><td>4 Participantes</td><td class="precio">$70.000</td></tr>
-                    <tr><td>5 Participantes</td><td class="precio">$78.000</td></tr>
-                    <tr><td>6 Participantes</td><td class="precio">$84.000</td></tr>
-                </table>
-
-<button class="btn-reservar" onclick="seleccionarMision('Extendida')">RESERVAR EXTENDIDA</button>            </div>
-
+        <div class="card-header">
+            <h3>MISIÓN EXPRESS</h3>
+            <span class="duracion">15 MINUTOS</span>
         </div>
+
+        <p class="card-desc">
+            La experiencia original de Misión15. Ideal para amigos, familias
+            y quienes buscan adrenalina, diversión y trabajo en equipo
+            en una misión contrarreloj.
+        </p>
+
+        <div class="specs-grid">
+            <div><strong>Jugadores:</strong> 2 a 6</div>
+            <div><strong>Edad:</strong> ATP <small>(&lt;11 años con adulto)</small></div>
+            <div><strong>Dificultad:</strong> Media (6.5/10)</div>
+        </div>
+
+        <!-- SEÑA EXPRESS -->
+        <div class="bloque-precio">
+
+            <table class="precios-tabla">
+                <tr>
+                    <td>Seña</td>
+                    <td class="precio">$15.000</td>
+                </tr>
+            </table>
+        </div>
+
+        <!-- PRECIOS EXPRESS -->
+        <div class="bloque-precio">
+            <h4>Precios generales</h4>
+
+            <table class="precios-tabla">
+                <tr>
+                    <td>2 Participantes</td>
+                    <td class="precio">$30.000</td>
+                </tr>
+                <tr>
+                    <td>3 Participantes</td>
+                    <td class="precio">$40.000</td>
+                </tr>
+                <tr>
+                    <td>4 Participantes</td>
+                    <td class="precio">$50.000</td>
+                </tr>
+                <tr>
+                    <td>5 Participantes</td>
+                    <td class="precio">$60.000</td>
+                </tr>
+                <tr>
+                    <td>6 Participantes</td>
+                    <td class="precio">$75.000</td>
+                </tr>
+            </table>
+        </div>
+
+        <button
+            class="btn-reservar"
+            onclick="seleccionarMision('Express')">
+            RESERVAR EXPRESS
+        </button>
+
+    </div>
+
+
+    <!-- ================= EXTENDIDA ================= -->
+    <div class="modalidad-card premium">
+
+        <div class="card-header">
+            <h3>MISIÓN EXTENDIDA</h3>
+            <span class="duracion">40 MINUTOS</span>
+        </div>
+
+        <p class="card-desc">
+            Una investigación más larga, con nuevos enigmas y mayor dificultad.
+            Recomendada para quienes ya conocen las salas de escape o buscan
+            un desafío más intenso.
+        </p>
+
+        <div class="specs-grid">
+            <div><strong>Jugadores:</strong> 2 a 6</div>
+            <div><strong>Edad:</strong> ATP <small>(&lt;13 años con adulto)</small></div>
+            <div><strong>Dificultad:</strong> Alta (7/10)</div>
+        </div>
+
+        <!-- SEÑA EXTENDIDA -->
+        <div class="bloque-precio">
+
+            <table class="precios-tabla">
+                <tr>
+                    <td>Seña</td>
+                    <td class="precio">$20.000</td>
+                </tr>
+            </table>
+        </div>
+
+        <!-- PRECIOS EXTENDIDA -->
+        <div class="bloque-precio">
+            <h4>Precios generales</h4>
+
+            <table class="precios-tabla">
+                <tr>
+                    <td>2 Participantes</td>
+                    <td class="precio">$43.000</td>
+                </tr>
+                <tr>
+                    <td>3 Participantes</td>
+                    <td class="precio">$59.000</td>
+                </tr>
+                <tr>
+                    <td>4 Participantes</td>
+                    <td class="precio">$70.000</td>
+                </tr>
+                <tr>
+                    <td>5 Participantes</td>
+                    <td class="precio">$78.000</td>
+                </tr>
+                <tr>
+                    <td>6 Participantes</td>
+                    <td class="precio">$84.000</td>
+                </tr>
+            </table>
+        </div>
+
+        <button
+            class="btn-reservar"
+            onclick="seleccionarMision('Extendida')">
+            RESERVAR EXTENDIDA
+        </button>
+
+    </div>
+
+</div>
     </section>
 
     <!-- VISTA 3: SISTEMA DE RESERVAS -->
@@ -254,7 +337,7 @@
     <div style="display: flex; gap: 15px; background: #161616;">
         <label style="cursor: pointer; display: flex; align-items: center; gap: 6px;color:#ffffff">
             <input type="radio" name="tipoPago" value="sena" checked onchange="calcularPrecioReserva()">
-            <span>Pagar Seña</span>
+            <span>Seña</span>
         </label>
         
         <label style="cursor: pointer; display: flex; align-items: center; gap: 6px;color: #ffffff;">
@@ -313,8 +396,12 @@
             <button type="button" class="btn-agregar-horario" onclick="agregarFilaHorario('09:00 hs', 1)" style="margin-top: 15px; padding: 8px 15px; background: #28a745; color: white; border: none; border-radius: 4px; cursor: pointer; font-weight: bold;">
     + Agregar nuevo horario
 </button>
-            <button type="button" class="btn-confirmar" onclick="guardarHorariosAdmin(document.getElementById('fechaAdmin').value)">Guardar Horarios</button>
-        </div>
+<button 
+    type="button" 
+    class="btn-confirmar" 
+    onclick="guardarHorariosAdmin()">
+    Guardar Horarios
+</button>        </div>
     </div>
 
     <!-- MODAL ADMIN: MONITOR DE RESERVAS (Alt+M) -->
